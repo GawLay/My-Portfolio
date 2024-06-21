@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><!--don't remove xmlns:android line otherwise you won't be able to call binding-->
+<!--suppress XmlUnusedNamespaceDeclaration -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_faqContent"
+    style="@style/FaqContentStyle"
+    tools:text="My favourite game are Resident Evil 4, Cyberpunk, Sekiro, Elden Ring" />

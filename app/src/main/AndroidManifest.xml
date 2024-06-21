@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.kyrie.myportfolio">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <application
+        android:name=".MyPortfolioApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_config"
+        android:roundIcon="@mipmap/ic_launcher_rounded"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyPortfolio"
+        tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".splash.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".aboutMe.AboutMeActivity"
+            android:theme="@style/Theme.MyPortfolio.Transparent" />
+        <activity
+            android:name=".skill.SkillActivity"
+            android:theme="@style/Theme.MyPortfolio.Transparent" />
+        <activity
+            android:name=".setting.SettingActivity"
+            android:theme="@style/Theme.MyPortfolio.Transparent" />
+        <activity
+            android:name=".myResume.MyResumeActivity"
+            android:theme="@style/Theme.MyPortfolio.Resume" />
+        <activity
+            android:name=".templates.TemplateActivity"
+            android:theme="@style/Theme.MyPortfolio.Templates" />
+        <activity
+            android:name=".experience.list.ExperienceActivity"
+            android:theme="@style/Theme.MyPortfolio.Transparent" />
+        <activity android:name=".webView.WebViewActivity" />
+        <activity android:name=".templates.pdf.TemplateViewerActivity" />
+        <activity android:name=".experience.detail.ExperienceDetailActivity" />
+        <activity android:name=".setting.attribute.AttributeActivity" />
+        <activity android:name=".setting.faq.FaqActivity" />
+    </application>
+
+</manifest>

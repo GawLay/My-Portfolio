@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:topLeftRadius="@dimen/default_radius"
+        android:topRightRadius="@dimen/default_radius"
+        android:bottomLeftRadius="@dimen/default_radius"
+        android:bottomRightRadius="@dimen/default_radius"/>
+    <gradient
+        android:startColor="@color/md_theme_tertiary"
+        android:centerColor="@color/md_theme_tertiary"
+        android:endColor="@color/colorTertiaryContainerTransparent_42"/>
+</shape>

@@ -1,0 +1,70 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
+        <item name="colorPrimaryVariant">@color/md_theme_secondary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_error</item>
+        <item name="colorOnError">@color/md_theme_onError</item>
+        <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_background</item>
+        <item name="colorOnBackground">@color/md_theme_onBackground</item>
+        <item name="colorSurface">@color/md_theme_surface</item>
+        <item name="colorOnSurface">@color/md_theme_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
+        <!--   Status bar color.   -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="titleTextOnSurfaceColor">?attr/colorOnSurface</item>
+        <item name="titleTextColor">@color/titleColor</item>
+        <item name="regularTextColor">@color/regularColor</item>
+        <item name="regularTextWithColor">@color/md_theme_primary</item>
+        <item name="regularTextOnPrimaryColor">?attr/colorOnPrimary</item>
+        <item name="descriptionPrimaryTextColor">?attr/colorPrimary</item>
+        <item name="descriptionTextColor">@color/descriptionColor</item>
+        <item name="bottomNavigationStyle">@style/MyPortfolioBottomNavStyle</item>
+        <item name="materialCardViewOutlinedStyle">@style/MyPortfolioMaterialCardViewOutlinedStyle
+        </item>
+        <item name="materialCardViewElevatedStyle">@style/MyPortfolioMaterialCardViewElevatedStyle
+        </item>
+        <item name="materialCardViewFilledStyle">@style/MyPortfolioMaterialCardViewFilledStyle
+        </item>
+        <item name="android:fontFamily">@font/lexend_regular</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
+
+    <style name="Theme.MyPortfolio.Transparent" parent="Theme.MyPortfolio">
+        <!--  Style for the second activity  -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="Theme.MyPortfolio.Resume" parent="Theme.MyPortfolio">
+        <!--         <item name="android:windowSharedElementEnterTransition">@transition/slide</item> -->
+    </style>
+
+    <style name="Theme.MyPortfolio.Templates" parent="Theme.MyPortfolio"></style>
+
+    <style name="Theme.Splash" parent="Theme.MyPortfolio">
+        <item name="android:statusBarColor">@color/md_theme_onSurface</item>
+        <!--  Style for the second activity  -->
+    </style>
+
+    <style name="Theme.MyPortfolio.MyRipple">
+        <item name="colorControlHighlight">#EEC9B1</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+</resources>

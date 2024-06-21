@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layoutAnimation
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:animation="@anim/item_animation_fall_down"
+        android:delay="30%"
+        android:animationOrder="normal"/>
+        <!--15%-->
+
+        <!--order-->
+        <!--There are three types to choose from: normal,reverse and random.
+         This allows to control in which order the content will be animated.
+          Normal follows the natural order of the layout (vertical: top to bottom, horizontal: left to right),
+           Reverse is the opposite of Normal and Random…well Random is random order.-->
+
+        <!--delay-->
+        <!--0% will cause all items in the layout to animate simultaneously,
+         and 100% will let each item finish it’s animation before the next one is started.
+         In this case, 15% of item A’s animation will pass before item B starts its animation.-->

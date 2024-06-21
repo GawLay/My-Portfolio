@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <ImageButton
+        android:id="@+id/imgBtn_Back"
+        style="@style/ResumeBtnStyle"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/view_header_bg"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="?attr/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:id="@+id/header_space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_bg" />
+
+    <include
+        android:id="@+id/include_job_card"
+        layout="@layout/item_rc_experience"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/experience_card_height"
+        android:layout_margin="12dp"
+        app:layout_constraintTop_toTopOf="@+id/header_space" />
+
+
+    <include
+        android:id="@+id/include_shimmer_exp"
+        layout="@layout/shimmer_exp_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/experience_card_height"
+        android:layout_margin="12dp"
+        app:layout_constraintTop_toTopOf="@+id/header_space" />
+
+    <!--    <com.google.android.material.tabs.TabLayout-->
+    <!--        android:id="@+id/tab_expDetail"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginHorizontal="8dp"-->
+    <!--        android:layout_marginTop="24dp"-->
+    <!--        android:background="@color/white"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/include_job_card"-->
+    <!--        app:tabBackground="@drawable/tab_background"-->
+    <!--        app:tabIndicator="@drawable/tab_selected_state"-->
+    <!--        app:tabIndicatorAnimationMode="elastic"-->
+    <!--        app:tabIndicatorColor="@android:color/transparent"-->
+    <!--        app:tabIndicatorGravity="stretch"-->
+    <!--        app:tabTextAppearance="@style/TabTextAppearance"-->
+    <!--        app:tabTextColor="@color/black" />-->
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_expDetail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/include_job_card"
+        app:layout_constraintStart_toStartOf="@+id/include_job_card"
+        app:layout_constraintTop_toBottomOf="@+id/include_job_card" />
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
+    <!--            android:id="@+id/rc_experience"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="24dp"-->
+    <!--            app:layout_constraintEnd_toEndOf="@+id/include_job_card"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/include_job_card"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/include_job_card"-->
+    <!--            tools:itemCount="1"-->
+    <!--            tools:listitem="@layout/item_experience_detail" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tv_skillTitle"-->
+    <!--            style="@style/ProjectTitleStyle"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:text="@string/skill"-->
+    <!--            android:layout_marginTop="12dp"-->
+    <!--            app:layout_constraintEnd_toEndOf="@+id/rc_experience"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/rc_experience"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/rc_experience" />-->
+
+
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
+    <!--            android:id="@+id/rc_skills"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="12dp"-->
+    <!--            app:layout_constraintEnd_toEndOf="@+id/rc_experience"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/rc_experience"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/rc_experience"-->
+    <!--            tools:itemCount="1"-->
+    <!--            tools:listitem="@layout/item_skill_row" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

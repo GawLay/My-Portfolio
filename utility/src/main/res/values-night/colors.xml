@@ -1,0 +1,49 @@
+<resources>
+    <color name="md_theme_primary">#ffb691</color>
+    <color name="md_theme_onPrimary">#552000</color>
+    <color name="md_theme_primaryContainer">#ec6d1b</color>
+    <color name="md_theme_onPrimaryContainer">#000000</color>
+
+    <color name="md_theme_secondary">#ffb691</color>
+    <color name="md_theme_onSecondary">#ffb691</color>
+    <color name="md_theme_secondaryContainer">#f4e0d4</color>
+    <color name="md_theme_onSecondaryContainer">#ffc4a8</color>
+
+    <color name="md_theme_tertiary">#e1d949</color>
+    <color name="md_theme_onTertiary">#343200</color>
+    <color name="md_theme_tertiaryContainer">#b6af1e</color>
+    <color name="md_theme_onTertiaryContainer">#232100</color>
+
+    <color name="md_theme_error">#ffb4ab</color>
+    <color name="md_theme_onError">#690005</color>
+    <color name="md_theme_errorContainer">#93000a</color>
+    <color name="md_theme_onErrorContainer">#ffdad6</color>
+
+    <color name="md_theme_background">#000000</color>
+    <color name="md_theme_onBackground">#FFF</color>
+
+    <color name="md_theme_outline">#FFFFFF</color>
+    <color name="md_theme_outlineVariant">#A59184</color>
+
+    <color name="md_theme_surface">#1c110b</color>
+    <color name="md_theme_onSurface">#f5ded4</color>
+    <color name="md_theme_surfaceVariant">#482C1C</color>
+    <color name="md_theme_onSurfaceVariant">#845F4D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="darkWhite">#F0F0F0</color>
+    <color name="titleColor">#062737</color>
+    <color name="regularColor">@color/black</color>
+    <color name="descriptionColor">@color/black</color>
+    <color name="setting_icon_color">@color/black</color>
+    <color name="black">#000</color>
+    <color name="shimmer_color">#E5E5E5</color>
+    <color name="grey">#3C3C3C</color>
+    <color name="pageBackgroundColor">#FFFFFF</color>
+    <color name="pageDarkBackgroundColor">#F0F0F0</color>
+    <color name="backIconColor">@color/black</color>
+    <color name="colorSurfaceSecondary">@color/white</color>
+    <color name="colorPrimaryContainerTransparent_71">#B5F67423</color>
+    <color name="colorPrimaryContainerTransparent_36">#5CF67423</color>
+    <color name="colorSecondaryTransparent_71">#B5EEC9B1</color>
+    <color name="colorSecondaryTransparent_36">#5CEEC9B1</color>
+</resources>

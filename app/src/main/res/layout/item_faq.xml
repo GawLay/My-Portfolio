@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_medium_rounded"
+    android:paddingTop="12dp"
+    android:paddingHorizontal="24dp"
+    android:animateLayoutChanges="true">
+
+
+    <LinearLayout
+        android:id="@+id/ll_faqTitleContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/icon_size"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_faqTitle"
+            style="@style/FaqTitleStyle"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="What are your favourite games?" />
+
+        <ImageButton
+            android:id="@+id/imgBtn_expand"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_next"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_faqContent"
+        style="@style/FaqContentStyle"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/ll_faqTitleContainer"
+        app:layout_constraintStart_toStartOf="@id/ll_faqTitleContainer"
+        app:layout_constraintTop_toBottomOf="@+id/ll_faqTitleContainer"
+        tools:listitem="@layout/item_child_faq"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/LineDividerStyle"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rc_faqContent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

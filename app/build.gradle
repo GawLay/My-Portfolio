@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    namespace 'com.kyrie.myportfolio'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.kyrie.myportfolio"
+        minSdk 23
+        targetSdk 34
+        versionCode 21
+        versionName "21.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+}
+
+dependencies {
+    lintChecks(project(':lint-checks'))
+    implementation project(':utility')
+    implementation project(':domain')
+    implementation project(':data')
+    implementation libs.core.ktx
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraint
+    implementation libs.shimmer
+    implementation libs.bundles.koins
+    implementation libs.progressButton
+    implementation libs.circleImageView
+    implementation libs.flexBox
+    implementation libs.lottieView
+    implementation libs.workManager
+    implementation libs.afreakyelfPdfViewr
+}

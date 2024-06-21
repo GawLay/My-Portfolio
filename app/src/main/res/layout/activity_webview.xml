@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="@dimen/resume_btn_height"
+        android:layout_height="@dimen/resume_btn_height"
+        android:layout_gravity="end"
+        android:layout_margin="8dp"
+        android:background="@drawable/app_btn_solid_design"
+        android:elevation="4dp"
+        android:src="@drawable/ic_baseline_clear_24"
+        tools:ignore="ContentDescription" />
+
+    <com.kyrie.utility.widgets.MyProFolioWebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>

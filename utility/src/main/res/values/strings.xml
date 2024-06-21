@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My ProFolio</string>
+    <string name="welcome_msg">Here\'s a hearty welcome</string>
+
+    <string name="fabTransformationSheetBehaviour">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
+    <string name="fabContentDescription">More About Me</string>
+    <string name="menu_skill">Skill</string>
+    <string name="menu_experience">Experience</string>
+    <string name="menu_about">About</string>
+    <string name="menu_revert">Revert</string>
+
+    <!--    region address Card-->
+    <string name="gmail">Gmail</string>
+    <string name="gmail_description">Contact</string>
+    <string name="github">Github</string>
+    <string name="github_description">Profile</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="linkedin_description">Contact</string>
+    <!--    endregion address Card-->
+
+
+    <string name="about_me">
+        As a professional android developer, I enjoy working with people who are professional in their approach. \n
+        I am proud of my teamwork and communication skills as I believe these are key to delivering a successful end Product.
+    </string>
+    <string name="resume">Resume</string>
+    <string name="call_me">Call Me Now</string>
+    <string name="resume_about_me">
+        I have over **5 years of experience** in developing mobile apps on **android platform**, \n
+        building Custom UI using Views, ViewGroups, Layouts, Widgets and graphics that scale based on the screen size.
+        I specialized in **Java** and **Kotlin**. \n A self motivate achiever with an ability  to plan and execute.\n
+        I\'m very passionate about learning new technologies.
+    </string>
+
+    <!--    region firebase-->
+    <string name="firebase_exception">Firebase unknown error</string>
+    <string name="default_exception">Something went wrong</string>
+    <!--    endregion firebase-->
+
+    <!--    region titles########-->
+    <string name="title_skill">Skill</string>
+    <string name="title_Experiences">Experiences</string>
+    <string name="title_setting">About</string>
+    <string name="title_attribution">Attribution</string>
+    <string name="title_faq">FAQ</string>
+    <!--    endregion titles#####-->
+    <string name="two_string_format">%1$s %2$s</string>
+    <string name="coming_soon">Coming Soon</string>
+
+    <!--    region exp####-->
+    <string name="exp_title">Experiences</string>
+    <string name="exp_description_format">• %1$s</string>
+    <string name="skill">Skills</string>
+    <string name="document_id_empty">Document ID is empty Proceed to Nothing</string>
+    <!--    endregion exp###-->
+    <string name="dot">• </string>
+
+    <!--    region Setting #######-->
+    <string name="setting_dark_mode">Dark Mode</string>
+    <string name="setting_attribute">Attributes</string>
+    <string name="setting_faq">FAQ</string>
+    <!--    endregion Setting ######-->
+
+<!--    attribution-->
+<!--    default-->
+    <string name="my_default_name">Phyo Aung Zaw</string>
+    <string name="resume_template_title">
+        <u>Resume Templates</u>.
+    </string>
+
+    <string name="tab_detail_title">Details</string>
+    <string name="tab_info_title">Info</string>
+<!--    download info-->
+    <string name="pdf_download_title">Downloading awesome Resume</string>
+    <string name="pdf_download_description">Readying to deliver my awesome Resume to you</string>
+    <string name="pdf_download_complete">Successfully delivered my awesome Resume to you.</string>
+    <string name="pdf_download_failed">Unfortunately I failed to delivered my awesome Resume to you.</string>
+</resources>
+

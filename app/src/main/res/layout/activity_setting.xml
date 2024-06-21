@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pageBackgroundColor"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_toolbar"
+        layout="@layout/view_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_darkMode"
+        style="@style/SettingContainerStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
+
+        <ImageView
+            style="@style/SettingIconStyle"
+            android:src="@drawable/dark_mode"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/SettingTextStyle"
+            android:text="@string/setting_dark_mode" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_darkMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:thumb="@drawable/switch_thumb_state"
+            app:track="@drawable/switch_track"
+            app:useMaterialThemeColors="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_attribute"
+        style="@style/SettingContainerStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            style="@style/SettingIconStyle"
+            android:src="@drawable/copyright"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/SettingTextStyle"
+            android:text="@string/setting_attribute" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_faq"
+        style="@style/SettingContainerStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            style="@style/SettingIconStyle"
+            android:src="@drawable/faq"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/SettingTextStyle"
+            android:text="@string/setting_faq" />
+    </LinearLayout>
+
+</LinearLayout>

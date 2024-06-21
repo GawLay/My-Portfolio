@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TitleFont" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">?titleTextColor</item>
+    </style>
+
+    <style name="TitleOnSurfaceFont" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">?titleTextOnSurfaceColor</item>
+    </style>
+
+    <style name="RegularPrimaryFont" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">?attr/regularTextWithColor</item>
+    </style>
+
+    <style name="RegularOnPrimaryFont" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">?regularTextOnPrimaryColor</item>
+    </style>
+
+    <style name="DescriptionPrimaryFont" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">?descriptionPrimaryTextColor</item>
+    </style>
+
+    <style name="DescriptionFont" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">?descriptionTextColor</item>
+    </style>
+
+    <style name="RegularFont" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">?regularTextColor</item>
+    </style>
+
+
+    <!--    region TextView-->
+
+
+    <style name="TitleTextStyle" parent="TitleFont">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/titleSize</item>
+    </style>
+
+    <style name="TitleTextOnSurfaceStyle" parent="TitleOnSurfaceFont">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/titleSize</item>
+    </style>
+
+    <style name="RegularTextStyle" parent="RegularFont">
+        <item name="android:textSize">@dimen/regularSize</item>
+    </style>
+
+
+    <style name="RegularPrimaryTextStyle" parent="RegularPrimaryFont">
+        <item name="android:textSize">@dimen/regularSize</item>
+    </style>
+
+    <style name="RegularOnPrimaryTextStyle" parent="RegularOnPrimaryFont">
+        <item name="android:textSize">@dimen/regularSize</item>
+    </style>
+
+    <style name="RegularTextStyle.Secondary">
+        <item name="android:textColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="DescriptionTextStyle" parent="DescriptionFont">
+        <item name="android:textSize">@dimen/descriptionSize</item>
+    </style>
+
+    <style name="DescriptionPrimaryTextStyle" parent="DescriptionPrimaryFont">
+        <item name="android:textSize">@dimen/descriptionSize</item>
+    </style>
+
+
+    <style name="TopRoundedCartStyle" parent="Widget.Material3.CardView.Elevated">
+        <item name="shapeAppearanceOverlay">@style/TopRoundedCardView</item>
+    </style>
+
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="RoundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8%</item>
+    </style>
+
+    <style name="MyPortfolioBottomNavStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="android:elevation">4dp</item>
+        <item name="itemActiveIndicatorStyle">@style/BtmNavTransparentActiveIndicatorStyle</item>
+    </style>
+
+    <style name="MyPortfolioMaterialCardViewOutlinedStyle" parent="Widget.Material3.CardView.Outlined">
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/colorSecondary</item>
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="MyPortfolioMaterialCardViewElevatedStyle" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="MyPortfolioMaterialCardViewFilledStyle" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="MyPortfolioTertiaryMaterialCardViewFilledStyle" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorTertiary</item>
+    </style>
+
+    <style name="MyPortfolioFloatingActionRoundedPrimaryStyle">
+        <item name="shapeAppearanceOverlay">
+            @style/FloatingActionButtonShapeAppearanceOverlayExtended
+        </item>
+    </style>
+
+    <style name="FloatingActionButtonShapeAppearanceOverlayExtended" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+3 </resources>

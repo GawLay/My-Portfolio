@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="titleTextColor" format="reference|color"/>
+    <attr name="titleTextOnSurfaceColor" format="reference|color"/>
+    <attr name="regularTextColor" format="reference|color"/>
+    <attr name="regularTextWithColor" format="reference|color"/>
+    <attr name="descriptionPrimaryTextColor" format="reference|color"/>
+    <attr name="regularTextOnPrimaryColor" format="reference|color"/>
+    <attr name="descriptionTextColor" format="reference|color"/>
+</resources>

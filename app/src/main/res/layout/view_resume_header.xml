@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_resume_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:padding="12dp"
+    tools:showIn="@layout/activity_resume">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        style="@style/ResumeBtnStyle"
+        android:alpha="0"
+        tools:alpha="1"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_myName"
+        style="@style/ResumeMyNameTitleOnSurfaceStyle"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="48dp"
+        android:alpha="0"
+        android:elevation="4dp"
+        android:rotation="320"
+        tools:alpha="1"
+        tools:text="My Name" />
+
+
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_default_rounded"
+        android:backgroundTint="?attr/colorSecondary"
+        android:outlineProvider="background"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/androidicon" />
+
+    <LinearLayout
+        android:id="@+id/ll_addressContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/address_card_height"
+        android:layout_gravity="bottom"
+        android:alpha="0"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        tools:alpha="1">
+
+        <include
+            android:id="@+id/include_gmail"
+            layout="@layout/view_gmail_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/include_git"
+            layout="@layout/view_github_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/include_linkedIn"
+            layout="@layout/view_linkedin_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</FrameLayout>

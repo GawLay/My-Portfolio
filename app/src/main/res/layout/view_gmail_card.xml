@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/AddressCardContainer">
+
+    <ImageView
+        android:id="@+id/iv_gmail"
+        style="@style/AddressCardIcon"
+        android:src="@drawable/gmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_gmailTitle"
+        style="@style/AddressTitle"
+        android:text="@string/gmail"
+        app:layout_constraintStart_toEndOf="@+id/iv_gmail"
+        app:layout_constraintTop_toTopOf="@id/iv_gmail" />
+
+    <TextView
+        android:id="@+id/tv_gmail_description"
+        style="@style/AddressDescription"
+        android:text="@string/gmail_description"
+        app:layout_constraintStart_toStartOf="@+id/tv_gmailTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tv_gmailTitle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

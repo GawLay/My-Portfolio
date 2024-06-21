@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="shimmer_fade_out">1500</integer>
+    <integer name="shimmer_duration">1800</integer>
+</resources>
