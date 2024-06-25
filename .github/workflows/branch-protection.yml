@@ -1,0 +1,29 @@
+name: Branch Protection
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+
+  pull_request:
+    branches:
+      - main
+      - 'release/**'
+
+jobs:
+  protect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if push to main or release branch
+        if: |
+          (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/'))) ||
+          (github.event_name == 'pull_request' && github.event.action == 'opened' && (github.event.pull_request.base.ref == 'main' || startsWith(github.event.pull_request.base.ref, 'release/')))
+        run: |
+          if [[ ${{ github.event_name }} == 'push' ]]; then
+            echo "Direct pushes to ${{ github.ref }} branch are not allowed. Please create a pull request instead."
+          elif [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            echo "Pull requests directly targeting ${{ github.event.pull_request.base.ref }} branch are not allowed."
+          fi
+          exit 1
