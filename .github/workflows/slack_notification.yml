@@ -1,0 +1,36 @@
+name: Slack Notifications
+
+on:
+  pull_request:
+    types: [opened, closed, reopened, synchronize]
+  pull_request_review:
+    types: [submitted, dismissed]
+  pull_request_review_comment:
+    types: [created, edited, deleted]
+  push:
+    branches:
+      - main
+      - 'release/**'
+
+jobs:
+  slack_notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Slack on Pull Request or Push
+        if: github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')))
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r '.pull_request.html_url' "$GITHUB_EVENT_PATH")
+          AUTHOR=$(jq -r '.pull_request.user.login' "$GITHUB_EVENT_PATH")
+          ACTION=${GITHUB_EVENT_NAME}
+          BRANCH=${GITHUB_REF}
+          
+          if [[ "$ACTION" == "pull_request" ]]; then
+            MESSAGE="Pull Request **${PR_TITLE}** ${ACTION} by ${AUTHOR} to branch ${BRANCH}. [View Pull Request](${PR_URL})"
+          elif [[ "$ACTION" == "push" ]]; then
+            MESSAGE="Push to branch ${BRANCH} by ${AUTHOR}."
+          fi
+          
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${MESSAGE}\"}" $SLACK_WEBHOOK_URL

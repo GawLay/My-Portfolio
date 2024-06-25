@@ -8,7 +8,6 @@ on:
 
   pull_request:
     branches:
-      - main
       - 'release/**'
 
 jobs:
@@ -18,12 +17,19 @@ jobs:
     steps:
       - name: Check if push to main or release branch
         if: |
-          (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/'))) ||
-          (github.event_name == 'pull_request' && github.event.action == 'opened' && (github.event.pull_request.base.ref == 'main' || startsWith(github.event.pull_request.base.ref, 'release/')))
+          github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/'))
         run: |
-          if [[ ${{ github.event_name }} == 'push' ]]; then
+          if [[ "${{ github.actor }}" != "${{ github.repository.owner.login }}" && "${{ github.event_name }}" == 'push' ]]; then
             echo "Direct pushes to ${{ github.ref }} branch are not allowed. Please create a pull request instead."
-          elif [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            echo "Pull requests directly targeting ${{ github.event.pull_request.base.ref }} branch are not allowed."
+            exit 1
           fi
-          exit 1
+
+      - name: Check if pull request targets  release branch
+        if: |
+          github.event_name == 'pull_request' && github.event.action == 'opened' &&
+          (startsWith(github.event.pull_request.base.ref, 'release/'))
+        run: |
+          if [[ "${{ github.actor }}" != "${{ github.repository.owner.login }}" && "${{ github.event_name }}" == 'pull_request' ]]; then
+            echo "Pull requests directly targeting ${{ github.event.pull_request.base.ref }} branch are not allowed."
+            exit 1
+          fi

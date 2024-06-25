@@ -56,6 +56,8 @@ throughout the application.
 
 Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes. For access to contribute directly to the project, please contact me privately.
 
+**Note:** A detailed `CONTRIBUTING.md` file will be added soon with more guidelines. For now, if you want to contribute, please kindly contact me via the contact information provided below.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
