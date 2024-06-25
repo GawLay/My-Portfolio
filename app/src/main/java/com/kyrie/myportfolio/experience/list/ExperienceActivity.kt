@@ -131,7 +131,18 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
                                 if (data != null) {
                                     binding.includeRcExp.rcExperience.layoutAnimation =
                                         recyclerViewAnimation
-                                    expAdapter?.submitList(data.data)
+                                    val expList = data.data
+                                    if (!expList.isNullOrEmpty()) {
+                                        val sortedList = expList.sortedBy {
+                                            it.priority
+                                        }
+                                        expAdapter?.submitList(sortedList)
+                                    } else {
+                                        showFancyToast(
+                                            "Empty Views Will be implemented Later",
+                                            type = FancyToastTypes.ERROR.value
+                                        )
+                                    }
                                 }
                             }
                         }

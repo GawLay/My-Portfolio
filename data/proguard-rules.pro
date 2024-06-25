@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.kyrie.data.models.** {*;}
+# If using Firebase Firestore, keep the classes and fields annotated with @Exclude
+-keepattributes *Annotation*

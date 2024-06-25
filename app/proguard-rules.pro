@@ -34,6 +34,10 @@
     public <init>(android.content.Context, android.util.AttributeSet);
     public <init>(android.content.Context, android.util.AttributeSet, int);
 }
+# Keep WebView JavaScript interfaces
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 # Preserve classes required by Firebase
 -keep class com.google.firebase.** { *; }
 -keep class com.google.android.gms.** { *; }
