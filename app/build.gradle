@@ -12,8 +12,8 @@ android {
         applicationId "com.kyrie.myportfolio"
         minSdk 23
         targetSdk 34
-        versionCode 21
-        versionName "21.0"
+        versionCode 25
+        versionName "25.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,6 +28,7 @@ android {
             shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles project(':data').file('proguard-rules.pro')
         }
     }
     compileOptions {

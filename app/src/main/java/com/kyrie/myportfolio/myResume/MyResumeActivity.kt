@@ -1,7 +1,6 @@
 package com.kyrie.myportfolio.myResume
 
 import android.animation.AnimatorSet
-import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.LayoutInflater
@@ -207,8 +206,19 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
                 it.stopShimmer()
                 it.visibility = View.GONE
                 if (data != null) {
+                    val expList = data.data
                     binding.includeRcExp.rcExperience.layoutAnimation = recyclerViewAnimation
-                    expAdapter?.submitList(data.data)
+                    if (!expList.isNullOrEmpty()) {
+                        val sortedList = expList.sortedBy {
+                            it.priority
+                        }
+                        expAdapter?.submitList(sortedList)
+                    } else {
+                        showFancyToast(
+                            "Empty Views Will be implemented Later",
+                            type = FancyToastTypes.ERROR.value
+                        )
+                    }
                 }
             }
         }

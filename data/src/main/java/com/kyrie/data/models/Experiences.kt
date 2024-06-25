@@ -11,6 +11,7 @@ data class ExperiencesData(
     val jobType: String? = "",
     val location: String? = "",
     val position: String? = "",
-    val timestamp: String? = ""
+    val timestamp: String? = "",
+    val priority: Int = 0
 )
 
