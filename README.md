@@ -7,6 +7,7 @@
 - [Technologies Used](#technologies-used)
 - [Dependency Injection with KOIN](#dependency-injection-with-koin)
 - [Screenshots](#screenshots)
+- [Playstore](#playstore)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -51,6 +52,10 @@ throughout the application.
 ## Screenshots
 
 ![Home Screen](screenshots/home.png)
+
+## Playstore
+
+You can download the app from the Google Playstore [here](https://play.google.com/store/apps/details?id=com.kyrie.myportfolio).  
 
 ## Contributing
 
