@@ -7,9 +7,12 @@ import androidx.core.content.ContextCompat
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.color.MaterialColors
 import com.kyrie.utility.animation.createValueAnimatorAnim
+import com.kyrie.utility.annotation.DoNotImplementDirectly
+import com.kyrie.utility.utility.ThemeUtil
 import com.kyrie.utility.utility.hideShimmer
 import com.kyrie.utility.R as UtilityR
 
+@DoNotImplementDirectly
 abstract class BaseUtilityAppCompat : AppCompatActivity() {
 
     protected val shimmerAnimDuration by lazy {
@@ -59,9 +62,17 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
     protected val whiteColor by lazy {
         ContextCompat.getColor(this, UtilityR.color.white)
     }
+    protected val blackColor by lazy {
+        ContextCompat.getColor(this, UtilityR.color.black)
+    }
 
-    open fun changeStatusColorFromWhiteToSecondary(duration: Long) {
-        createValueAnimatorAnim(whiteColor, secondaryStatusColor, duration) {
+    open fun changeStatusColorFromDefaultToSecondary(duration: Long) {
+        val fromColor = if (ThemeUtil.isNightMode(this)) {
+            blackColor
+        } else {
+            whiteColor
+        }
+        createValueAnimatorAnim(fromColor, secondaryStatusColor, duration) {
             //changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
         }
@@ -74,8 +85,13 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
         }
     }
 
-    open fun changeStatusColorFromSecondaryToWhite(duration: Long) {
-        createValueAnimatorAnim(secondaryStatusColor, whiteColor, duration) {
+    open fun changeStatusColorFromSecondaryToDefault(duration: Long) {
+        val toColor = if (ThemeUtil.isNightMode(this)) {
+            blackColor
+        } else {
+            whiteColor
+        }
+        createValueAnimatorAnim(secondaryStatusColor, toColor, duration) {
             //changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
         }
@@ -88,7 +104,7 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
         }
     }
 
-    open fun  hideShimmerAndBindList(
+    open fun hideShimmerAndBindList(
         shimmerLayout: ShimmerFrameLayout,
         bindList: () -> Unit
     ) {

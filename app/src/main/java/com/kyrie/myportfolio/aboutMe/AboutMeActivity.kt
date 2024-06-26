@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kyrie.data.models.Profile
 import com.kyrie.data.remote.State
+import com.kyrie.data.storage.local.IPrefSource
 import com.kyrie.myportfolio.R
 import com.kyrie.myportfolio.base.BaseRevealActivity
 import com.kyrie.myportfolio.databinding.ActivityAboutMeBinding
@@ -41,6 +42,7 @@ import com.kyrie.utility.utility.toggleItemClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.util.Pair as UtilPair
 
@@ -182,7 +184,7 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
             binding.tvGmail.apply {
                 with(gmailFadeInAndOut(fromReEnter = false)) {
                     duration = 200L
-                    changeStatusColorFromSecondaryToWhite(400L)
+                    changeStatusColorFromSecondaryToDefault(400L)
                     doOnEnd {
                         makeSharedSceneTransitionWithData<MyResumeActivity>(
                             REQUEST_CODE,
