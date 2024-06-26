@@ -34,7 +34,7 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
     private val REQUEST_CODE = 2000
 
     override fun onCreated(savedInstanceState: Bundle?) {
-        changeStatusColorFromSecondaryToWhite(750L)
+        changeStatusColorFromSecondaryToDefault(750L)
         setWindowAnimation()
         binding.includeToolbar.toolbar.title = getString(UtilityR.string.exp_title)
         binding.includeRcExp.rcExperience.alpha = 1f
@@ -158,7 +158,7 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
     override fun handleBackPress() {
         lifecycleScope.launch {
             delay(200)
-            changeStatusColorFromWhiteToSecondary(300L)
+            changeStatusColorFromDefaultToSecondary(300L)
             revealAnimation?.unRevealActivity()
         }
     }

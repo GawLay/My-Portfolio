@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:textColor="@color/grey"
         android:text="@string/dot" />
     <TextView
         android:id="@+id/tv_description"
@@ -17,6 +16,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:textColor="@color/grey"
         tools:text="Developed and Maintained bla bla" />
 </LinearLayout>

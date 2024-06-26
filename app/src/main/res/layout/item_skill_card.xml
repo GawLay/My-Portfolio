@@ -17,8 +17,8 @@
             android:layout_height="@dimen/icon_size"
             android:layout_gravity="center"
             android:layout_weight="1"
-            tools:src="@drawable/androidicon"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/androidicon" />
 
         <TextView
             android:id="@+id/tv_skill"
@@ -28,6 +28,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_horizontal"
+            android:textColor="@color/black"
             tools:text="Github" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
