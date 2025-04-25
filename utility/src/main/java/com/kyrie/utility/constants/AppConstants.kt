@@ -69,8 +69,6 @@ enum class NotificationNotifyId(val id:Int){
     PDF_NOTIFICATION_NOTIFY_ID(1)
 }
 
-enum class PDFPreviewGoogleDocUrl(val url: String){
-    //url= linktoyourpdf.pdf
-
-    PDF_PREVIEW_GOOGLE_DOC_URL("https://docs.google.com/gview?embedded=true&url=")
+enum class ThemeModeKey(val key: String){
+    NIGHT_MODE(":nightMode"),
 }

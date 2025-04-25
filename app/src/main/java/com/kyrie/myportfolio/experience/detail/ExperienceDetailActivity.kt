@@ -40,7 +40,7 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
     }
 
     override fun onCreated(savedInstanceState: Bundle?) {
-        changeStatusColorFromWhiteToSecondary(500L)
+        changeStatusColorFromDefaultToSecondary(500L)
         postponeEnterTransition()
         awaitViewDraw {
             startPostponedEnterTransition()
@@ -154,7 +154,7 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
 
     override fun handleBackPress() {
         hideVP()
-        changeStatusColorFromSecondaryToWhite(500L)
+        changeStatusColorFromSecondaryToDefault(500L)
         setResult(RESULT_OK)
         finishAfterTransition()
     }

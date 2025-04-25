@@ -40,14 +40,18 @@ class FaqAdapter : ListAdapter<FaqData, FaqAdapter.FaqViewHolder>(FaqDiffUtil) {
             val colorSecondaryTransparent =
                 ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorSecondaryTransparent_36) )
             val colorWhite = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white) )
+            val colorBlack = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black) )
+
             val rotationStartValue: Float
             val rotationEndValue: Float
             val backgroundColor:ColorStateList
             if (item.isExpanded) {
+                binding.tvFaqTitle.setTextColor(colorWhite)
                 rotationStartValue = 90f
                 rotationEndValue = 0f
                 backgroundColor = colorSecondaryTransparent
             } else {
+                binding.tvFaqTitle.setTextColor(colorBlack)
                 rotationStartValue = 0f
                 rotationEndValue = 90f
                 backgroundColor = colorWhite

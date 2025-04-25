@@ -25,7 +25,7 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
     private val viewModel: SkillViewModel by viewModel()
 
     override fun onCreated(savedInstanceState: Bundle?) {
-        changeStatusColorFromSecondaryToWhite(750L)
+        changeStatusColorFromSecondaryToDefault(750L)
         setupRc()
         getSkills()
         binding.includeToolbar.toolbar.title = getString(UtilityR.string.title_skill)
@@ -98,7 +98,7 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
     override fun handleBackPress() {
         lifecycleScope.launch {
             delay(200)
-            changeStatusColorFromWhiteToSecondary(200L)
+            changeStatusColorFromDefaultToSecondary(200L)
             revealAnimation?.unRevealActivity()
         }
     }

@@ -32,7 +32,7 @@ employers and collaborators to easily learn more about my work and get in touch 
 - **Kotlin**: The primary programming language used for the app.
 - **KOIN**: [Dependency injection framework](https://insert-koin.io/docs/quickstart/android/).
 - **Glide**: For image loading.
-- **MDC - Android**: [Material Design Components for Android](https://m3.material.io/develop/android/mdc-android).
+- **MDC - Android**: [Material Design Components for Android](https://m3.material.io/develop/android/mdc-android) and [Material Theme Builder](https://material-foundation.github.io/material-theme-builder).
 - **Coroutine Flow**: [Asynchronous data stream](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/).
 - **WorkManager**: [For managing and downloading PDF templates](https://developer.android.com/reference/androidx/work/WorkManager).
 - **Firebase Firestore**: NoSQL cloud database to store and sync data.

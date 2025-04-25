@@ -357,7 +357,7 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
             hideViews()
             //to prevent awkward  status color change,
             //used anim update progress   instead of directly change then revert circular reveal animation
-            changeStatusColorFromWhiteToSecondary(600L)
+            changeStatusColorFromDefaultToSecondary(600L)
             delay(200)
             setResult(RESULT_OK)
             finishAfterTransition()

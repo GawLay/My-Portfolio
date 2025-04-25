@@ -9,7 +9,7 @@
         android:right="4dp">
 
         <shape android:shape="oval">
-            <solid android:color="@android:color/black"/>
+            <solid android:color="?backgroundColor"/>
             <size android:height="@dimen/thumb_custom_size"
                 android:width="@dimen/thumb_custom_size"/>
         </shape>

@@ -216,6 +216,7 @@
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="FaqContentStyle" parent="RegularTextStyle">

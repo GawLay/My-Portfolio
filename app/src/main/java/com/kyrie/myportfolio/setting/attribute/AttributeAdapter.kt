@@ -1,7 +1,5 @@
 package com.kyrie.myportfolio.setting.attribute
 
-import android.os.Build
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kyrie.data.models.Attributes
 import com.kyrie.myportfolio.databinding.ItemAttributeBinding
-import com.kyrie.utility.R as UtilitR
+import com.kyrie.utility.utility.setHtmlText
 
 class AttributeAdapter : ListAdapter<Attributes, AttributeAdapter.AttributeVH>(AttributeDiffUtil) {
     inner class AttributeVH(private val binding: ItemAttributeBinding) :
@@ -18,12 +16,7 @@ class AttributeAdapter : ListAdapter<Attributes, AttributeAdapter.AttributeVH>(A
         fun bind(item: Attributes) {
             binding.tvIconName.text = item.name
             binding.tvAttribute.apply {
-
-                text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Html.fromHtml(item.attributeLine, Html.FROM_HTML_MODE_COMPACT)
-                } else {
-                    Html.fromHtml(item.attributeLine)
-                }
+                setHtmlText(item.attributeLine)
                 movementMethod = LinkMovementMethod.getInstance()
             }
 

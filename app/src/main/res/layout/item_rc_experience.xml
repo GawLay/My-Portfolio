@@ -17,12 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:textColor="@color/black"
             tools:text="Senior Android Developer" />
 
         <TextView
             android:id="@+id/tv_companyName"
             style="@style/CompanyTextStyle"
             android:layout_marginTop="12dp"
+            android:textColor="@color/black"
             tools:text="Company Name" />
 
 
@@ -32,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/black"
             tools:text="Yangon" />
 
         <TextView
@@ -40,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/black"
             tools:text="2022-2024" />
 
         <TextView
