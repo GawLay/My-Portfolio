@@ -52,13 +52,9 @@ throughout the application.
 
 ![Home Screen](screenshots/home.png)
 
-## PlayStore
+## Playstore
 
-You can download the app from the Google PlayStore [here](https://play.google.com/store/apps/details?id=com.kyrie.myportfolio).
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+You can download the app from the Google Playstore [here](https://play.google.com/store/apps/details?id=com.kyrie.myportfolio).  
 
 ## Contact
 
