@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'com.kyrie.utility'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdk 23
-        targetSdk 34
+        targetSdk 35
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -38,7 +38,5 @@ dependencies {
     implementation libs.glider
     implementation libs.shimmer
     implementation libs.material
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation libs.bundles.androidTest
 }

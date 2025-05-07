@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true">
 
     <com.rajat.pdfviewer.PdfRendererView
-        android:id="@+id/pdfRendererView"
+        android:id="@+id/pdfRendererView_template"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

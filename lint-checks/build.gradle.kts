@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.ktlint)
 }
 
 java {
@@ -9,6 +10,13 @@ java {
 }
 
 dependencies {
-    compileOnly(libs.lintApi) // = agp + 23.0.0
-    testImplementation(libs.lintTest)
+    compileOnly(libs.bundles.lintCheck)
+    compileOnly(libs.kotlinStdLib)
+    testImplementation(libs.bundles.lintTest)
+}
+
+tasks.jar {
+    manifest {
+        attributes(mapOf("Lint-Registry-v2" to "com.kyrie.myportfolio.lintChecks.MyIssueRegistry"))
+    }
 }

@@ -10,19 +10,19 @@ class TemplateViewModel(private val templateUseCase: TemplateUseCase) : ViewMode
     suspend fun fetchPdfUrl(
         fileName: String,
         onFailureListener: (Exception) -> Unit,
-        onPdfUrl: (String) -> Unit
+        onPdfUrl: (String) -> Unit,
     ) = templateUseCase.fetchPdfUrl(fileName, onFailureListener, onPdfUrl)
 
-     fun startDownloadPdf(
+    fun startDownloadPdf(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
         onWorkManagerInstance: (WorkManager, UUID) -> Unit,
-        intentDownloadUrl: String = ""
+        intentDownloadUrl: String = "",
     ) = templateUseCase.startDownloadPdf(
         fileNameToDownload,
         onFailureListener,
         onWorkManagerInstance,
-        intentDownloadUrl
+        intentDownloadUrl,
     )
 
     suspend fun getTemplateList() = templateUseCase.getTemplateList()

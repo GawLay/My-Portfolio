@@ -10,6 +10,7 @@ import com.kyrie.myportfolio.setting.attribute.AttributeActivity
 import com.kyrie.myportfolio.setting.faq.FaqActivity
 import com.kyrie.utility.constants.ThemeModeKey
 import com.kyrie.utility.utility.ThemeUtil
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.startIntent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,8 +33,8 @@ class SettingActivity : BaseRevealActivity<ActivitySettingBinding>() {
             if (isNightMode) {
                 binding.switchDarkMode.isChecked = true
             } else {
-                //user didn't select night mode
-                //proceeding to check system theme mode
+                // user didn't select night mode
+                // proceeding to check system theme mode
                 binding.switchDarkMode.isChecked = ThemeUtil.isNightMode(this)
             }
         }
@@ -41,38 +42,31 @@ class SettingActivity : BaseRevealActivity<ActivitySettingBinding>() {
 
     private fun setToolbar() {
         changeStatusColorFromSecondaryToDefault(750L)
-        binding.includeToolbar.toolbar.apply {
+        binding.includeToolbar.toolbarGeneric.apply {
             title = getString(UtilityR.string.title_setting)
             setNavigationOnClickListener {
                 handleBackPress()
             }
         }
-
     }
 
     override fun onClickEvents() {
         binding.llAttribute.setOnClickListener {
             startIntent<AttributeActivity>()
-//            if (Build.VERSION.SDK_INT > 33) {
-//                overrideActivityTransition(
-//                    UtilityR.anim.item_animation_slide_from_bottom,
-//                    UtilityR.anim.anim_stay_still
-//                )
-//            } else {
-            overridePendingTransition(
-                com.kyrie.utility.R.anim.item_animation_slide_from_bottom,
-                com.kyrie.utility.R.anim.anim_stay_still
+            overridePendingTransitionExt(
+                false,
+                UtilityR.anim.item_animation_slide_from_bottom,
+                UtilityR.anim.anim_stay_still,
             )
-//            }
         }
 
         binding.llFaq.setOnClickListener {
             startIntent<FaqActivity>()
-            overridePendingTransition(
-                com.kyrie.utility.R.anim.item_animation_slide_from_bottom,
-                com.kyrie.utility.R.anim.anim_stay_still
+            overridePendingTransitionExt(
+                false,
+                UtilityR.anim.item_animation_slide_from_bottom,
+                UtilityR.anim.anim_stay_still,
             )
-//            }
         }
 
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->

@@ -47,7 +47,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:animateLayoutChanges="true"
@@ -146,7 +145,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.circularreveal.CircularRevealFrameLayout
-        android:id="@+id/cr_frame"
         style="@style/CircularRevealFrameStyle"
         android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="8dp"

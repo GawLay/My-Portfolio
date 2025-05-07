@@ -19,30 +19,39 @@ class SkillItemAdapter :
             binding.ivSkillIcon.loadUrl(data.url ?: "")
             binding.tvSkill.text = data.name
         }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillsViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): SkillsViewHolder {
         val binding = ItemSkillCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SkillsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SkillsViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: SkillsViewHolder,
+        position: Int,
+    ) {
         val data = getItem(position)
-        if (data != null)
+        if (data != null) {
             holder.bind(data)
+        }
     }
-
-
 }
 
 private object SkillItemDiffUtils : DiffUtil.ItemCallback<SkillsData>() {
-    override fun areItemsTheSame(oldItem: SkillsData, newItem: SkillsData): Boolean {
+    override fun areItemsTheSame(
+        oldItem: SkillsData,
+        newItem: SkillsData,
+    ): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: SkillsData, newItem: SkillsData): Boolean {
+    override fun areContentsTheSame(
+        oldItem: SkillsData,
+        newItem: SkillsData,
+    ): Boolean {
         return oldItem.url == newItem.url
     }
-
 }

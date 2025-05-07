@@ -10,7 +10,6 @@ import android.transition.Transition
 import android.transition.TransitionValues
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.widget.TextView
 
 class Recolor : Transition {
     constructor() {}
@@ -19,6 +18,7 @@ class Recolor : Transition {
     companion object {
         private const val PROPNAME_BACKGROUND = "android:recolor:background"
     }
+
     private fun captureValues(transitionValues: TransitionValues) {
         transitionValues.values[PROPNAME_BACKGROUND] = transitionValues.view.background
     }
@@ -31,21 +31,16 @@ class Recolor : Transition {
         captureValues(transitionValues)
     }
 
-    override fun createAnimator(
-        sceneRoot: ViewGroup, startValues: TransitionValues,
-        endValues: TransitionValues
-    ): Animator? {
-        val view = endValues.view
-        val startBackground = startValues.values[PROPNAME_BACKGROUND] as Drawable
-        val endBackground = endValues.values[PROPNAME_BACKGROUND] as Drawable
+    override fun createAnimator(sceneRoot: ViewGroup, startValues: TransitionValues?, endValues: TransitionValues?): Animator? {
+        val view = endValues?.view
+        val startBackground = startValues?.values?.get(PROPNAME_BACKGROUND) as Drawable
+        val endBackground = endValues?.values?.get(PROPNAME_BACKGROUND) as Drawable
         if (startBackground is ColorDrawable && endBackground is ColorDrawable) {
-            val startColor = startBackground
-            val endColor = endBackground
-            if (startColor.color != endColor.color) {
-                endColor.color = startColor.color
+            if (startBackground.color != endBackground.color) {
+                endBackground.color = startBackground.color
                 return ObjectAnimator.ofObject(
                     endBackground!!, "color",
-                    ArgbEvaluator(), startColor.color, endColor.color
+                    ArgbEvaluator(), startBackground.color, endBackground.color
                 )
             }
         }

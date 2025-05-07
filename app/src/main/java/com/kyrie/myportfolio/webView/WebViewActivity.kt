@@ -7,6 +7,7 @@ import com.kyrie.myportfolio.base.BaseActivity
 import com.kyrie.myportfolio.databinding.ActivityWebviewBinding
 import com.kyrie.myportfolio.myResume.MyResumeActivity
 import com.kyrie.utility.constants.WebViewIntentKey
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.startPlayStore
 import com.kyrie.utility.R as UtilityR
 
@@ -22,7 +23,7 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
     override fun onCreated(savedInstanceState: Bundle?) {
         val type = intent.getStringExtra(WebViewIntentKey.URL_TYPE.key)
         var url = intent.getStringExtra(WebViewIntentKey.URL_KEY.key) ?: ""
-        binding.webView.setBuiltInZoomControl()
+        binding.webViewMyProfolio.setBuiltInZoomControl()
         if (url.isEmpty()) {
             when (type) {
                 MyResumeActivity.LINKEDIN -> {
@@ -34,11 +35,11 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
                 }
             }
         }
-        binding.webView.load(url)
-        binding.webView.setOnPlayStoreAppLoaded { playStoreUrl ->
+        binding.webViewMyProfolio.load(url)
+        binding.webViewMyProfolio.setOnPlayStoreAppLoaded { playStoreUrl ->
 
-            startPlayStore(playStoreUrl){
-               //no need to handle fallback
+            startPlayStore(playStoreUrl) {
+                // no need to handle fallback
             }
 
             true
@@ -46,7 +47,7 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
     }
 
     override fun onClickEvents() {
-        binding.btnBack.setOnClickListener {
+        binding.imgBtnBack.setOnClickListener {
             handleBackPress()
         }
     }
@@ -55,25 +56,26 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
 
     override fun handleBackPress() {
         finish()
-        overridePendingTransition(
+        overridePendingTransitionExt(
+            true,
             UtilityR.anim.anim_stay_still,
-            UtilityR.anim.item_animation_slide_from_top
+            UtilityR.anim.item_animation_slide_from_top,
         )
     }
 
     override fun onResume() {
         super.onResume()
-        binding.webView.onResume()
+        binding.webViewMyProfolio.onResume()
     }
 
     override fun onDestroy() {
-        binding.webView.stopLoading()
-        binding.webView.destroy()
+        binding.webViewMyProfolio.stopLoading()
+        binding.webViewMyProfolio.destroy()
         super.onDestroy()
     }
 
     override fun onPause() {
-        binding.webView.onPause()
+        binding.webViewMyProfolio.onPause()
         super.onPause()
     }
 }

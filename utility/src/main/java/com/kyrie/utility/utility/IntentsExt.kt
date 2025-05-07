@@ -1,18 +1,21 @@
 package com.kyrie.utility.utility
 
 import android.app.Activity
+import android.app.Activity.OVERRIDE_TRANSITION_CLOSE
+import android.app.Activity.OVERRIDE_TRANSITION_OPEN
 import android.app.ActivityOptions
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.core.net.toUri
 import com.kyrie.utility.constants.MyAddressAssociate
 import com.kyrie.utility.constants.PackageName
-import com.kyrie.utility.constants.PlayStoreUrl
 import android.util.Pair as UtilPair
 
 
@@ -107,7 +110,7 @@ inline fun <reified T> Activity.makeSharedSceneTransitionWithDataResult(
 }
 
 fun Context.startActionViewIntent(url: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
 }
@@ -116,7 +119,7 @@ fun Context.startPlayStore(url: String, fallback: () -> Unit) {
     try {
         val intent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse(url)
+            url.toUri()
         )
         intent.setPackage("com.android.vending")
         startActivity(intent)
@@ -129,7 +132,7 @@ fun Context.startPlayStore(url: String, fallback: () -> Unit) {
 fun Activity.startLinkedIn(fallback: () -> Unit) {
     try {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(MyAddressAssociate.LINKEDIN_URL.associate)
+        intent.data = MyAddressAssociate.LINKEDIN_URL.associate.toUri()
         intent.setPackage(PackageName.LINKEDIN_PACKAGE_NAME.packageName)
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
@@ -149,7 +152,7 @@ fun Activity.startGmail() {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(MyAddressAssociate.GMAIL_WEB_COMPOSE_BOX.associate)
+                MyAddressAssociate.GMAIL_WEB_COMPOSE_BOX.associate.toUri()
             )
         )
     }
@@ -168,5 +171,22 @@ inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     SDK_INT >= 33 -> getParcelable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+}
+
+fun Activity.overridePendingTransitionExt(
+    overrideTransitionClose: Boolean = false,
+    enterAnim: Int,
+    exitAnim: Int,
+) {
+    if (SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        overrideActivityTransition(
+            if (overrideTransitionClose) OVERRIDE_TRANSITION_CLOSE else OVERRIDE_TRANSITION_OPEN,
+            enterAnim,
+            exitAnim
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        overridePendingTransition(enterAnim, exitAnim)
+    }
 }
 

@@ -31,19 +31,21 @@ class TemplateViewerActivity : BaseActivity<ActivityTemplatePdfViewerBinding>() 
                 fileName,
                 ::onFailedDownloadUrl,
                 ::observeWorkManager,
-                intentDownloadUrl = firebaseUrl
+                intentDownloadUrl = firebaseUrl,
             )
         }
-        binding.pdfRendererView
+        binding.pdfRendererViewTemplate
             .initWithUrl(
                 firebaseUrl,
                 lifecycleCoroutineScope = lifecycleScope,
-                lifecycle = lifecycle
+                lifecycle = lifecycle,
             )
     }
 
-
-    private fun observeWorkManager(workManager: WorkManager, uuid: UUID) {
+    private fun observeWorkManager(
+        workManager: WorkManager,
+        uuid: UUID,
+    ) {
         workManager.getWorkInfoByIdLiveData(uuid)
             .observe(this) {
                 if (it?.state == WorkInfo.State.FAILED) {
@@ -55,13 +57,11 @@ class TemplateViewerActivity : BaseActivity<ActivityTemplatePdfViewerBinding>() 
             }
     }
 
-
     private fun onFailedDownloadUrl(exception: Exception) {
         showFancyToast("Failure ${exception.message}", FancyToastTypes.ERROR.value)
     }
 
-    override fun setBinding(inflater: LayoutInflater) =
-        ActivityTemplatePdfViewerBinding.inflate(inflater)
+    override fun setBinding(inflater: LayoutInflater) = ActivityTemplatePdfViewerBinding.inflate(inflater)
 
     override fun handleBackPress() {
         finish()

@@ -11,6 +11,6 @@ class ExpDetailVPAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
     override fun getItemCount(): Int = 1
 
     override fun createFragment(position: Int): Fragment {
-       return ExperienceDetailInfoFragment()
+        return ExperienceDetailInfoFragment()
     }
 }

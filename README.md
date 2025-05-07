@@ -7,8 +7,7 @@
 - [Technologies Used](#technologies-used)
 - [Dependency Injection with KOIN](#dependency-injection-with-koin)
 - [Screenshots](#screenshots)
-- [Playstore](#playstore)
-- [Contributing](#contributing)
+- [PlayStore](#playstore)
 - [License](#license)
 - [Contact](#contact)
 
@@ -59,7 +58,7 @@ You can download the app from the Google Playstore [here](https://play.google.co
 
 ## Contact
 
-Feel free to reach out to me for any queries or collaboration opportunities:
+Feel free to reach out to me for any queries:
 
 - **Email**: phyoaz14@gmail.com
 - **LinkedIn**: [My LinkedIn](https://www.linkedin.com/in/phyoaungzaw)

@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_resume">
 
     <ImageButton
-        android:id="@+id/btn_back"
+        android:id="@+id/imgBtn_back"
         style="@style/ResumeBtnStyle"
         android:alpha="0"
         tools:alpha="1"

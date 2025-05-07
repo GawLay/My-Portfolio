@@ -15,11 +15,10 @@ class ExperienceListAdapter(private val onItemClick: (String, Int, View) -> Unit
     inner class ExperienceListVH(private val binding: ItemRcExperienceBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ExperiencesData) {
-            val context = binding.root.context
-            binding.root.transitionName = SharedElementsNames.JOB_CARD_SHARED.name + adapterPosition
+            binding.root.transitionName = SharedElementsNames.JOB_CARD_SHARED.name + absoluteAdapterPosition
             binding.apply {
                 root.setOnClickListener {
-                    onItemClick.invoke(data.id ?: "", adapterPosition, binding.root)
+                    onItemClick.invoke(data.id ?: "", absoluteAdapterPosition, binding.root)
                 }
                 tvCompanyName.text = data.jobTitle
                 tvLocation.text = data.location
@@ -28,16 +27,21 @@ class ExperienceListAdapter(private val onItemClick: (String, Int, View) -> Unit
                 tvJobType.text = data.jobType
             }
         }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperienceListVH {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ExperienceListVH {
         val context = parent.context
         val binding = ItemRcExperienceBinding.inflate(LayoutInflater.from(context), parent, false)
         return ExperienceListVH(binding)
     }
 
-    override fun onBindViewHolder(holder: ExperienceListVH, position: Int) {
+    override fun onBindViewHolder(
+        holder: ExperienceListVH,
+        position: Int,
+    ) {
         val data = getItem(position)
         if (data != null) {
             holder.bind(data)
@@ -46,16 +50,21 @@ class ExperienceListAdapter(private val onItemClick: (String, Int, View) -> Unit
 }
 
 object ExpDiffUtil : DiffUtil.ItemCallback<ExperiencesData>() {
-    override fun areItemsTheSame(oldItem: ExperiencesData, newItem: ExperiencesData): Boolean {
+    override fun areItemsTheSame(
+        oldItem: ExperiencesData,
+        newItem: ExperiencesData,
+    ): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: ExperiencesData, newItem: ExperiencesData): Boolean {
+    override fun areContentsTheSame(
+        oldItem: ExperiencesData,
+        newItem: ExperiencesData,
+    ): Boolean {
         return oldItem.id == newItem.id && oldItem.jobTitle == newItem.jobTitle &&
-                oldItem.jobType == newItem.jobType &&
-                oldItem.location == newItem.location &&
-                oldItem.timestamp == newItem.timestamp &&
-                oldItem.position == newItem.position
+            oldItem.jobType == newItem.jobType &&
+            oldItem.location == newItem.location &&
+            oldItem.timestamp == newItem.timestamp &&
+            oldItem.position == newItem.position
     }
-
 }

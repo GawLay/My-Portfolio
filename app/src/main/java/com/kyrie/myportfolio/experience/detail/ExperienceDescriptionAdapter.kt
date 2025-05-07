@@ -36,61 +36,77 @@ class ExperienceDescriptionAdapter :
             }
         }
 
-        private fun handleClickUrl(url: String, context: Context) {
+        private fun handleClickUrl(
+            url: String,
+            context: Context,
+        ) {
             binding.tvDescription.movementMethod = LinkMovementMethod.getInstance()
             val spannableString = SpannableString(url)
-            val secondaryColor = ContextCompat.getColor(context, UtilityR.color.md_theme_secondary);
+            val secondaryColor = ContextCompat.getColor(context, UtilityR.color.md_theme_secondary)
 
             // Create a ClickableSpan
-            val clickableSpan = object : ClickableSpan() {
-                override fun onClick(widget: View) {
-                    if (url.isPlayStoreLink()) {
-                        //redirect to play store
-                        context.startPlayStore(url) {
-                            //package not found
+            val clickableSpan =
+                object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        if (url.isPlayStoreLink()) {
+                            // redirect to play store
+                            context.startPlayStore(url) {
+                                // package not found
+                                context.startIntentWithData<WebViewActivity> {
+                                    putExtra(WebViewIntentKey.URL_KEY.key, url)
+                                }
+                            }
+                        } else {
+                            // simple web link url
                             context.startIntentWithData<WebViewActivity> {
                                 putExtra(WebViewIntentKey.URL_KEY.key, url)
                             }
                         }
-                    } else {
-                        //simple web link url
-                        context.startIntentWithData<WebViewActivity> {
-                            putExtra(WebViewIntentKey.URL_KEY.key, url)
-                        }
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        ds.isUnderlineText = true
+                        ds.color = secondaryColor
                     }
                 }
-
-                override fun updateDrawState(ds: TextPaint) {
-                    super.updateDrawState(ds)
-                    ds.isUnderlineText = true
-                    ds.color = secondaryColor
-                }
-            }
             spannableString.setSpan(clickableSpan, 0, url.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             binding.tvDescription.text = spannableString
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpDescriptionVH {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ExpDescriptionVH {
         val binding =
             ItemChildExperienceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ExpDescriptionVH(binding)
     }
 
-    override fun onBindViewHolder(holder: ExpDescriptionVH, position: Int) {
+    override fun onBindViewHolder(
+        holder: ExpDescriptionVH,
+        position: Int,
+    ) {
         val item = getItem(position)
-        if (item != null)
+        if (item != null) {
             holder.bind(item)
+        }
     }
 }
 
 private object ExpDescDiffUtil : DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    override fun areItemsTheSame(
+        oldItem: String,
+        newItem: String,
+    ): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+    override fun areContentsTheSame(
+        oldItem: String,
+        newItem: String,
+    ): Boolean {
         return oldItem == newItem
     }
-
 }

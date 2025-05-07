@@ -6,7 +6,7 @@
     android:clipToPadding="false">
 
     <ImageButton
-        android:id="@+id/btn_back"
+        android:id="@+id/imgBtn_back"
         android:layout_width="@dimen/resume_btn_height"
         android:layout_height="@dimen/resume_btn_height"
         android:layout_gravity="end"
@@ -17,7 +17,7 @@
         tools:ignore="ContentDescription" />
 
     <com.kyrie.utility.widgets.MyProFolioWebView
-        android:id="@+id/webView"
+        android:id="@+id/webView_myProfolio"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

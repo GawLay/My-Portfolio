@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kyrie.myportfolio.base.BaseActivity
 import com.kyrie.myportfolio.databinding.ActivityAttributesBinding
 import com.kyrie.utility.utility.ItemOffsetDecoration
-import com.kyrie.utility.utility.changeStatusBarColor
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.R as UtilityR
 
 class AttributeActivity : BaseActivity<ActivityAttributesBinding>() {
     private var attributeAdapter: AttributeAdapter? = null
+
     override fun onCreated(savedInstanceState: Bundle?) {
         setToolbar()
         setRc()
     }
 
     private fun setToolbar() {
-        binding.include.toolbar.apply {
-
+        binding.includeToolbar.toolbarGeneric.apply {
             title = getString(UtilityR.string.title_attribution)
             setNavigationOnClickListener {
                 handleBackPress()
@@ -42,7 +42,10 @@ class AttributeActivity : BaseActivity<ActivityAttributesBinding>() {
 
     override fun handleBackPress() {
         finish()
-        overridePendingTransition(UtilityR.anim.anim_stay_still,UtilityR.anim.item_animation_slide_from_top)
+        overridePendingTransitionExt(
+            true,
+            UtilityR.anim.anim_stay_still,
+            UtilityR.anim.item_animation_slide_from_top,
+        )
     }
 }
-

@@ -28,11 +28,11 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
         changeStatusColorFromSecondaryToDefault(750L)
         setupRc()
         getSkills()
-        binding.includeToolbar.toolbar.title = getString(UtilityR.string.title_skill)
+        binding.includeToolbar.toolbarGeneric.title = getString(UtilityR.string.title_skill)
     }
 
     override fun onClickEvents() {
-        binding.includeToolbar.toolbar.setNavigationOnClickListener {
+        binding.includeToolbar.toolbarGeneric.setNavigationOnClickListener {
             handleBackPress()
         }
     }
@@ -52,7 +52,7 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
                         is State.Failed -> {
                             showFancyToast(
                                 "Failed Views Will be implemented Later",
-                                type = FancyToastTypes.ERROR.value
+                                type = FancyToastTypes.ERROR.value,
                             )
                         }
 
@@ -60,14 +60,15 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
                             val data = state.data
                             val skillList = data?.data
                             if (!skillList.isNullOrEmpty()) {
-                                val sortedList = skillList.sortedBy {
-                                    it.priority
-                                }
+                                val sortedList =
+                                    skillList.sortedBy {
+                                        it.priority
+                                    }
                                 setSkillList(sortedList)
                             } else {
                                 showFancyToast(
                                     "Empty Views Will be implemented Later",
-                                    type = FancyToastTypes.ERROR.value
+                                    type = FancyToastTypes.ERROR.value,
                                 )
                             }
                         }
@@ -76,7 +77,6 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
             }
         }
     }
-
 
     private fun setSkillList(skillList: List<SkillsData>?) {
         binding.rcSkills.layoutAnimation = recyclerViewAnimation
@@ -102,5 +102,4 @@ class SkillActivity : BaseRevealActivity<ActivitySkillBinding>() {
             revealAnimation?.unRevealActivity()
         }
     }
-
 }

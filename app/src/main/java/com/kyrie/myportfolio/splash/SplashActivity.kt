@@ -7,15 +7,22 @@ import androidx.lifecycle.lifecycleScope
 import com.kyrie.myportfolio.aboutMe.AboutMeActivity
 import com.kyrie.myportfolio.base.BaseActivity
 import com.kyrie.myportfolio.databinding.ActivitySplashBinding
-import com.kyrie.utility.animation.*
+import com.kyrie.utility.R
+import com.kyrie.utility.animation.ALPHA
+import com.kyrie.utility.animation.CircularRevealAnim
+import com.kyrie.utility.animation.SCALE_X
+import com.kyrie.utility.animation.SCALE_Y
+import com.kyrie.utility.animation.TRANSLATION_Y
+import com.kyrie.utility.animation.createAnim
+import com.kyrie.utility.animation.startAnimSet
 import com.kyrie.utility.math.GetXY
 import com.kyrie.utility.utility.changeStatusBarColor
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.startRevealIntent
 import kotlinx.coroutines.delay
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
-
     override fun onCreated(savedInstanceState: Bundle?) {
 //        hideStatusBar()
         changeStatusBarColor(secondaryStatusColor)
@@ -32,31 +39,37 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     helloTextFadeIn,
                     scaleX,
                     scaleY,
-                    translation
+                    translation,
                 )
             }
         }
-        binding.lottieWelcome.addAnimatorListener(com.kyrie.utility.simplifyInteractors.AnimatorListenerAdapter(
-            onEnd = {
-                revealActivity(cx, cy)
-            }
-        ))
+        binding.lottieWelcome.addAnimatorListener(
+            com.kyrie.utility.simplifyInteractors.AnimatorListenerAdapter(
+                onEnd = {
+                    revealActivity(cx, cy)
+                },
+            ),
+        )
     }
 
-    private fun revealActivity(cx: Int?, cy: Int?) {
+    private fun revealActivity(
+        cx: Int?,
+        cy: Int?,
+    ) {
         startRevealIntent<AboutMeActivity> {
             putExtra(CircularRevealAnim.EXTRA_CIRCULAR_REVEAL_X, cx)
             putExtra(CircularRevealAnim.EXTRA_CIRCULAR_REVEAL_Y, cy)
         }
-        //prevent default transition animation
-        overridePendingTransition(
-            com.kyrie.utility.R.anim.anim_stay_still,
-            com.kyrie.utility.R.anim.anim_stay_still
+        // prevent default transition animation
+        overridePendingTransitionExt(
+            false,
+            R.anim.anim_stay_still,
+            R.anim.anim_stay_still,
         )
     }
 
-
     override fun setBinding(inflater: LayoutInflater) = ActivitySplashBinding.inflate(inflater)
+
     override fun handleBackPress() {
         finishAffinity()
     }
