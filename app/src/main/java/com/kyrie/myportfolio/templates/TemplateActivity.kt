@@ -23,8 +23,8 @@ import com.kyrie.utility.animation.startAnimSet
 import com.kyrie.utility.constants.FancyToastTypes
 import com.kyrie.utility.constants.TemplateIntentKey
 import com.kyrie.utility.utility.RecyclerMarginHorizontalHelper
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.showFancyToast
-import com.kyrie.utility.utility.showLog
 import com.kyrie.utility.utility.startIntentWithData
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,7 +52,6 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
         observe()
     }
 
-
     private fun observe() {
         lifecycleScope.launch {
             templateViewModel.getTemplateList().collectLatest { state ->
@@ -74,10 +73,7 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
                     }
                 }
             }
-
         }
-
-
     }
 
     private fun setTemplateTitle(templateTitle: String?) {
@@ -89,7 +85,7 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
             startAnimSet(
                 fadeIn,
                 scaleX,
-                scaleY
+                scaleY,
             )
         }
     }
@@ -106,7 +102,7 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
 
             setPageTransformer { page, position ->
                 val scale = 0.90f + (1 - abs(position)) * 0.10f
-                //to display the page in the middle of the screen larger
+                // to display the page in the middle of the screen larger
                 page.scaleY = scale
             }
         }
@@ -122,17 +118,19 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
                         putExtra(TemplateIntentKey.PDF_FILE_NAME.key, fileName)
                         putExtra(TemplateIntentKey.PDF_PREVIEW_URL.key, it)
                     }
-                }
+                },
             )
         }
     }
 
-    private fun observeWorkManager(workManager: WorkManager, uuid: UUID) {
+    private fun observeWorkManager(
+        workManager: WorkManager,
+        uuid: UUID,
+    ) {
         workManager.getWorkInfoByIdLiveData(uuid)
             .observe(this) {
                 if (it?.state == WorkInfo.State.FAILED) {
                     showFancyToast("Failed to downloaded")
-
                 }
                 if (it?.state == WorkInfo.State.SUCCEEDED) {
                     showFancyToast("Successfully downloaded")
@@ -153,12 +151,10 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
             templateViewModel.startDownloadPdf(
                 fileName,
                 ::onFailedDownloadUrl,
-                ::observeWorkManager
+                ::observeWorkManager,
             )
         }
-
     }
-
 
     private fun onFailedDownloadUrl(exception: Exception) {
         showFancyToast("Failure ${exception.message}", FancyToastTypes.ERROR.value)
@@ -166,12 +162,12 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
 
     override fun setBinding(inflater: LayoutInflater) = ActivityTemplateBinding.inflate(inflater)
 
-    //TODO change to 34
     override fun handleBackPress() {
         finish()
-        overridePendingTransition(
-            com.kyrie.utility.R.anim.anim_stay_still,
-            com.kyrie.utility.R.anim.item_animation_slide_from_top
+        overridePendingTransitionExt(
+            true,
+            UtilityR.anim.anim_stay_still,
+            UtilityR.anim.item_animation_slide_from_top,
         )
     }
 
@@ -179,20 +175,18 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             hasNotificationPermissionGranted = isGranted
             if (!isGranted) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (Build.VERSION.SDK_INT >= 33) {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                            showNotificationPermissionRationale()
-                        } else {
-                            showSettingDialog()
-                        }
+                if (Build.VERSION.SDK_INT >= 33) {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                        showNotificationPermissionRationale()
+                    } else {
+                        showSettingDialog()
                     }
                 }
             } else {
                 templateViewModel.startDownloadPdf(
                     fileName,
                     ::onFailedDownloadUrl,
-                    ::observeWorkManager
+                    ::observeWorkManager,
                 )
             }
         }
@@ -200,19 +194,21 @@ class TemplateActivity : BaseActivity<ActivityTemplateBinding>() {
     private fun showSettingDialog() {
         MaterialAlertDialogBuilder(
             this,
-            R.style.MaterialAlertDialog_Material3
+            R.style.MaterialAlertDialog_Material3,
         )
             .setTitle("Notification Permission")
-            .setMessage("You will no longer see notification about PDF downloading status. Please enable manually if you want to see again.")
+            .setMessage(
+                "You will no longer see notification about PDF downloading status. " +
+                    "Please enable manually if you want to see again.",
+            )
             .setPositiveButton("Ok") { _, _ -> }
             .show()
     }
 
     private fun showNotificationPermissionRationale() {
-
         MaterialAlertDialogBuilder(
             this,
-            R.style.MaterialAlertDialog_Material3
+            R.style.MaterialAlertDialog_Material3,
         )
             .setTitle("Alert")
             .setMessage("Notification permission is required, to show notification")

@@ -11,7 +11,6 @@ import io.noties.markwon.core.MarkwonTheme
 import org.commonmark.node.Node
 
 
-@Suppress("SpellCheckingInspection")
 fun Context.setMarkdown(text: String, targetView: TextView) {
     val markwon: Markwon = Markwon.create(this)
     val node: Node = markwon.parse(text)

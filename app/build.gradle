@@ -2,19 +2,31 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    alias(libs.plugins.ktlint)
 }
 
 android {
+    lint {
+        disable.add("CoroutineCreationDuringComposition")
+    }
+    lintOptions {
+        textOutput "stdout"
+        textReport true
+        textOutput file("lint-report.txt")
+        warningsAsErrors false
+        abortOnError true
+        lintConfig file("${project.rootDir}/lint-check/lint.xml") // Optional, see below
+    }
     namespace 'com.kyrie.myportfolio'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.kyrie.myportfolio"
         minSdk 23
-        targetSdk 34
+        targetSdk 35
         versionCode 26
         versionName "26.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -32,23 +44,58 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         viewBinding true
         buildConfig true
     }
+    packagingOptions {
+        resources {
+            excludes += [
+                'META-INF/DEPENDENCIES',
+                'META-INF/LICENSE',
+                'META-INF/LICENSE.txt',
+                'META-INF/license.txt',
+                'META-INF/NOTICE',
+                'META-INF/NOTICE.txt',
+                'META-INF/notice.txt',
+                'META-INF/ASL2.0',
+                'META-INF/*.md',
+                'META-INF/*.kotlin_module',
+                'META-INF/AL2.0',
+                'META-INF/LGPL2.1'
+            ]
+        }
+    }
 }
+
+
+ktlint {
+    verbose.set(true)
+    filter {
+        exclude { it.file.path.contains("generated/") }
+        exclude { it.file.path.contains("build/") }
+    }
+}
+
+tasks.register("ktLintCheckFormat") {
+    description = "Formats Kotlin files and checks for formatting issues"
+    group = "formatting"
+    dependsOn("ktlintFormat", "ktlintCheck")
+}
+
 
 dependencies {
     lintChecks(project(':lint-checks'))
     implementation project(':utility')
     implementation project(':domain')
     implementation project(':data')
+    implementation libs.multidex
     implementation libs.core.ktx
     implementation libs.appcompat
     implementation libs.material
@@ -61,4 +108,5 @@ dependencies {
     implementation libs.lottieView
     implementation libs.workManager
     implementation libs.afreakyelfPdfViewr
+    testImplementation libs.bundles.androidTest
 }

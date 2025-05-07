@@ -30,21 +30,22 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
     private val viewModel: SharedViewModel by viewModel()
     private var expAdapter: ExperienceListAdapter? = null
 
-    @Suppress("PrivatePropertyName")
-    private val REQUEST_CODE = 2000
+    private val requestCode = 2000
 
     override fun onCreated(savedInstanceState: Bundle?) {
         changeStatusColorFromSecondaryToDefault(750L)
         setWindowAnimation()
-        binding.includeToolbar.toolbar.title = getString(UtilityR.string.exp_title)
+        binding.includeToolbar.toolbarGeneric.title = getString(UtilityR.string.exp_title)
         binding.includeRcExp.rcExperience.alpha = 1f
         binding.includeShimmer.root.alpha = 1f
         getExpList()
         setRc()
     }
 
-
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+    override fun onActivityReenter(
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityReenter(resultCode, data)
         binding.includeRcExp.rcExperience.layoutAnimation = recyclerFadeScaleIn
     }
@@ -78,14 +79,17 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
 //        }
     }
 
-
     override fun onClickEvents() {
-        binding.includeToolbar.toolbar.setNavigationOnClickListener {
+        binding.includeToolbar.toolbarGeneric.setNavigationOnClickListener {
             handleBackPress()
         }
     }
 
-    private fun onItemClick(documentId: String, adapterPosition: Int, sharedView: View) {
+    private fun onItemClick(
+        documentId: String,
+        adapterPosition: Int,
+        sharedView: View,
+    ) {
         if (documentId.isEmpty()) {
             showFancyToast(getString(UtilityR.string.document_id_empty))
             return
@@ -93,15 +97,14 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
         binding.includeRcExp.rcExperience.let {
             it.layoutAnimation = recyclerFadeScaleOut
             makeSharedSceneTransitionWithDataResult<ExperienceDetailActivity>(
-                REQUEST_CODE,
-                Pair.create(sharedView, sharedView.transitionName)
+                requestCode,
+                Pair.create(sharedView, sharedView.transitionName),
             ) {
                 putExtra(ExpIntentKeys.DOCUMENT_ID.key, documentId)
                 putExtra(ExpIntentKeys.ADAPTER_POS.key, adapterPosition)
             }
         }
     }
-
 
     private fun setRc() {
         expAdapter = ExperienceListAdapter(::onItemClick)
@@ -133,20 +136,20 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
                                         recyclerViewAnimation
                                     val expList = data.data
                                     if (!expList.isNullOrEmpty()) {
-                                        val sortedList = expList.sortedBy {
-                                            it.priority
-                                        }
+                                        val sortedList =
+                                            expList.sortedBy {
+                                                it.priority
+                                            }
                                         expAdapter?.submitList(sortedList)
                                     } else {
                                         showFancyToast(
                                             "Empty Views Will be implemented Later",
-                                            type = FancyToastTypes.ERROR.value
+                                            type = FancyToastTypes.ERROR.value,
                                         )
                                     }
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -162,6 +165,4 @@ class ExperienceActivity : BaseRevealActivity<ActivityExperienceBinding>() {
             revealAnimation?.unRevealActivity()
         }
     }
-
-
 }

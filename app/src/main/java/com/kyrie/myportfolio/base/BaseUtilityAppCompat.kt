@@ -14,7 +14,6 @@ import com.kyrie.utility.R as UtilityR
 
 @DoNotImplementDirectly
 abstract class BaseUtilityAppCompat : AppCompatActivity() {
-
     protected val shimmerAnimDuration by lazy {
         resources.getInteger(UtilityR.integer.shimmer_duration).toLong()
     }
@@ -24,7 +23,7 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
         MaterialColors.getColor(
             this,
             com.google.android.material.R.attr.colorSecondary,
-            defaultColor
+            defaultColor,
         )
     }
 
@@ -67,50 +66,51 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
     }
 
     open fun changeStatusColorFromDefaultToSecondary(duration: Long) {
-        val fromColor = if (ThemeUtil.isNightMode(this)) {
-            blackColor
-        } else {
-            whiteColor
-        }
+        val fromColor =
+            if (ThemeUtil.isNightMode(this)) {
+                blackColor
+            } else {
+                whiteColor
+            }
         createValueAnimatorAnim(fromColor, secondaryStatusColor, duration) {
-            //changing previous activity's status bar color to look more elegant
+            // changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
         }
     }
 
     open fun changeStatusColorFromGreyToSecondary(duration: Long) {
         createValueAnimatorAnim(greyStatusColor, secondaryStatusColor, duration) {
-            //changing previous activity's status bar color to look more elegant
+            // changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
         }
     }
 
     open fun changeStatusColorFromSecondaryToDefault(duration: Long) {
-        val toColor = if (ThemeUtil.isNightMode(this)) {
-            blackColor
-        } else {
-            whiteColor
-        }
+        val toColor =
+            if (ThemeUtil.isNightMode(this)) {
+                blackColor
+            } else {
+                whiteColor
+            }
         createValueAnimatorAnim(secondaryStatusColor, toColor, duration) {
-            //changing previous activity's status bar color to look more elegant
+            // changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
         }
     }
 
     open fun changeStatusColorFromSecondaryToGrey(duration: Long) {
         createValueAnimatorAnim(secondaryStatusColor, greyStatusColor, duration) {
-            //changing previous activity's status bar color to look more elegant
+            // changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
         }
     }
 
     open fun hideShimmerAndBindList(
         shimmerLayout: ShimmerFrameLayout,
-        bindList: () -> Unit
+        bindList: () -> Unit,
     ) {
         shimmerLayout.hideShimmer(shimmerAnimDuration) {
             bindList.invoke()
         }
     }
-
 }

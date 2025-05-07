@@ -1,0 +1,24 @@
+root = true
+
+[*.{kt,kts}]
+# Wildcard imports
+ktlint_standard_no-wildcard-imports = enabled
+
+# Indentation
+indent_size = 4
+continuation_indent_size = 8
+ktlint_standard_indent = enabled
+
+# Whitespace
+ktlint_standard_trailing-whitespace = enabled
+insert_final_newline = true
+max_line_length = 150
+
+[*.{java,xml,gradle,md}]
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 150
+
+[app/src/main/**/di/*.{kt,kts}]
+ktlint_standard_filename = disabled #for koin module naming

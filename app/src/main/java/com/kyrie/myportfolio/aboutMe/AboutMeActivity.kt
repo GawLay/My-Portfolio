@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kyrie.data.models.Profile
 import com.kyrie.data.remote.State
-import com.kyrie.data.storage.local.IPrefSource
 import com.kyrie.myportfolio.R
 import com.kyrie.myportfolio.base.BaseRevealActivity
 import com.kyrie.myportfolio.databinding.ActivityAboutMeBinding
@@ -33,6 +32,7 @@ import com.kyrie.utility.utility.changeStatusBarColor
 import com.kyrie.utility.utility.getByteArrayFromImageView
 import com.kyrie.utility.utility.loadUrl
 import com.kyrie.utility.utility.makeSharedSceneTransitionWithData
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.setHtmlText
 import com.kyrie.utility.utility.setSafeOnClickListener
 import com.kyrie.utility.utility.showFancyToast
@@ -42,17 +42,14 @@ import com.kyrie.utility.utility.toggleItemClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.util.Pair as UtilPair
-
 
 class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
     private val viewModel: AboutMeViewModel by viewModel()
     private var myPhoneNumber = ""
 
-    @Suppress("PrivatePropertyName")
-    private val REQUEST_CODE = 1000
+    private val requestCode = 1000
 
     override fun onCreated(savedInstanceState: Bundle?) {
         changeStatusBarColor(secondaryStatusColor)
@@ -79,7 +76,6 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
                         is State.Success -> {
                             hideShimmerAndSetupViews(state.data)
                         }
-
                     }
                 }
             }
@@ -119,7 +115,10 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
         }
     }
 
-    private fun setDescriptionWithBottomAction(descriptionOne: String?, phone: String?) {
+    private fun setDescriptionWithBottomAction(
+        descriptionOne: String?,
+        phone: String?,
+    ) {
         binding.tvDescription.let {
             val defaultDesc = getString(com.kyrie.utility.R.string.about_me)
             it.text = descriptionOne ?: defaultDesc
@@ -187,12 +186,12 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
                     changeStatusColorFromSecondaryToDefault(400L)
                     doOnEnd {
                         makeSharedSceneTransitionWithData<MyResumeActivity>(
-                            REQUEST_CODE,
-                            UtilPair.create(binding.clHeader, binding.clHeader.transitionName)
+                            requestCode,
+                            UtilPair.create(binding.clHeader, binding.clHeader.transitionName),
                         ) {
                             putExtra(
                                 BundleKeys.ABOUT_ME_BITMAP_KEY.key,
-                                binding.ivProfile.getByteArrayFromImageView()
+                                binding.ivProfile.getByteArrayFromImageView(),
                             )
                         }
                     }
@@ -202,19 +201,11 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
         }
         binding.tvPreviewTemplate.setSafeOnClickListener {
             startIntent<TemplateActivity>()
-            //todo change to 34
-//            val colorTrans = UtilityR.color.colorGmailTransparent
-//            if (Build.VERSION.SDK_INT > 33) {
-//                overrideActivityTransition(
-//                    UtilityR.anim.item_animation_slide_from_bottom, UtilityR.anim.anim_stay_still,
-//                    colorTrans
-//                )
-//            } else {
-            overridePendingTransition(
+            overridePendingTransitionExt(
+                false,
                 com.kyrie.utility.R.anim.item_animation_slide_from_bottom,
-                com.kyrie.utility.R.anim.anim_stay_still
+                com.kyrie.utility.R.anim.anim_stay_still,
             )
-//            }
         }
     }
 
@@ -228,16 +219,19 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
                 putExtra(CircularRevealAnim.EXTRA_CIRCULAR_REVEAL_X, fabCx)
                 putExtra(CircularRevealAnim.EXTRA_CIRCULAR_REVEAL_Y, fabCy)
             }
-            //prevent default transition animation
-            overridePendingTransition(
+            overridePendingTransitionExt(
+                false,
                 com.kyrie.utility.R.anim.anim_stay_still,
-                com.kyrie.utility.R.anim.item_animation_slide_from_bottom
+                com.kyrie.utility.R.anim.item_animation_slide_from_bottom,
             )
+            // prevent default transition animation
         }
     }
 
-
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+    override fun onActivityReenter(
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityReenter(resultCode, data)
         // need to set back to surface since we change status  bar to white before transition to next page
         changeStatusBarColor(secondaryStatusColor)
@@ -249,7 +243,6 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
                     start()
                 }
             }
-
         }
     }
 
@@ -263,17 +256,17 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
             startValue = 1f
             endValue = 0f
         }
-        return if (fromReEnter)
+        return if (fromReEnter) {
             createAnim(ALPHA, startValue, endValue)
-        else
+        } else {
             createAnim(ALPHA, startValue, endValue)
-
+        }
     }
 //    endregion View Utility #####################
 
     override fun setBinding(inflater: LayoutInflater) = ActivityAboutMeBinding.inflate(inflater)
+
     override fun handleBackPress() {
         finishAffinity()
     }
-
 }

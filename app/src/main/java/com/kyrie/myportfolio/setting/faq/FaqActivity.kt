@@ -11,6 +11,7 @@ import com.kyrie.myportfolio.setting.faq.adapter.FaqAdapter
 import com.kyrie.utility.R
 import com.kyrie.utility.constants.FancyToastTypes
 import com.kyrie.utility.utility.ItemOffsetDecoration
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.showFancyToast
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class FaqActivity : BaseActivity<ActivityFaqBinding>() {
     private val viewModel: FaqViewModel by viewModel()
     private lateinit var faqAdapter: FaqAdapter
+
     override fun onCreated(savedInstanceState: Bundle?) {
         setupToolbar()
         setupRc()
@@ -56,7 +58,7 @@ class FaqActivity : BaseActivity<ActivityFaqBinding>() {
                             } else {
                                 showFancyToast(
                                     "Empty Views Will be implemented Later",
-                                    type = FancyToastTypes.ERROR.value
+                                    type = FancyToastTypes.ERROR.value,
                                 )
                             }
                         }
@@ -67,7 +69,7 @@ class FaqActivity : BaseActivity<ActivityFaqBinding>() {
     }
 
     private fun setupToolbar() {
-        binding.includeToolbar.toolbar.apply {
+        binding.includeToolbar.toolbarGeneric.apply {
             title = getString(R.string.title_faq)
             setNavigationOnClickListener {
                 handleBackPress()
@@ -75,11 +77,14 @@ class FaqActivity : BaseActivity<ActivityFaqBinding>() {
         }
     }
 
-
     override fun setBinding(inflater: LayoutInflater) = ActivityFaqBinding.inflate(inflater)
 
     override fun handleBackPress() {
         finish()
-        overridePendingTransition(R.anim.anim_stay_still, R.anim.item_animation_slide_from_top)
+        overridePendingTransitionExt(
+            true,
+            R.anim.anim_stay_still,
+            R.anim.item_animation_slide_from_top,
+        )
     }
 }

@@ -16,13 +16,11 @@ import com.kyrie.utility.R
 import com.kyrie.utility.animation.HALF_SECOND
 import com.kyrie.utility.animation.ROTATE
 import com.kyrie.utility.animation.createAnim
-import com.kyrie.utility.utility.ItemOffsetDecoration
 import com.kyrie.utility.utility.containsMarkdown
 import com.kyrie.utility.utility.setMarkdown
 import com.kyrie.utility.utility.setSafeOnClickListener
 
 class FaqAdapter : ListAdapter<FaqData, FaqAdapter.FaqViewHolder>(FaqDiffUtil) {
-
     inner class FaqViewHolder(private val binding: ItemFaqBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FaqData) {
@@ -38,13 +36,13 @@ class FaqAdapter : ListAdapter<FaqData, FaqAdapter.FaqViewHolder>(FaqDiffUtil) {
                 notifyItemChanged(bindingAdapterPosition)
             }
             val colorSecondaryTransparent =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorSecondaryTransparent_36) )
-            val colorWhite = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white) )
-            val colorBlack = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black) )
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorSecondaryTransparent_36))
+            val colorWhite = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+            val colorBlack = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
 
             val rotationStartValue: Float
             val rotationEndValue: Float
-            val backgroundColor:ColorStateList
+            val backgroundColor: ColorStateList
             if (item.isExpanded) {
                 binding.tvFaqTitle.setTextColor(colorWhite)
                 rotationStartValue = 90f
@@ -75,32 +73,42 @@ class FaqAdapter : ListAdapter<FaqData, FaqAdapter.FaqViewHolder>(FaqDiffUtil) {
                 faqChildAdapter.submitList(answerList)
             }
         }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FaqViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): FaqViewHolder {
         return FaqViewHolder(
             ItemFaqBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 
-    override fun onBindViewHolder(holder: FaqViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: FaqViewHolder,
+        position: Int,
+    ) {
         holder.bind(getItem(position))
     }
 }
 
 object FaqDiffUtil : DiffUtil.ItemCallback<FaqData>() {
-    override fun areItemsTheSame(oldItem: FaqData, newItem: FaqData): Boolean {
+    override fun areItemsTheSame(
+        oldItem: FaqData,
+        newItem: FaqData,
+    ): Boolean {
         return oldItem.question == newItem.question
     }
 
-    override fun areContentsTheSame(oldItem: FaqData, newItem: FaqData): Boolean {
+    override fun areContentsTheSame(
+        oldItem: FaqData,
+        newItem: FaqData,
+    ): Boolean {
         return oldItem.question == newItem.question &&
-                oldItem.answers.size == newItem.answers.size
+            oldItem.answers.size == newItem.answers.size
     }
-
 }

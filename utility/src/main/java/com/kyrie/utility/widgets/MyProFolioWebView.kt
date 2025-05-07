@@ -27,6 +27,7 @@ import com.kyrie.utility.utility.isValidUrl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 @SuppressLint("SetJavaScriptEnabled")
 class MyProFolioWebView(context: Context, attrs: AttributeSet) : WebView(context, attrs) {
@@ -197,7 +198,7 @@ class MyProFolioWebView(context: Context, attrs: AttributeSet) : WebView(context
 
         private fun processUrl(strUrl: String, view: WebView?): Boolean {
             try {
-                val replaceUri = Uri.parse(strUrl)
+                val replaceUri = strUrl.toUri()
                 processedURL = strUrl
                 return when {
                     onUrlLoading?.invoke(replaceUri) == true -> {

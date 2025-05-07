@@ -70,14 +70,16 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
     }
 
     private fun setWindowTransition() {
-        window.enterTransition = TransitionUtils.getExpDetailWindowTransition(
-            this,
-            binding.viewHeaderBg, binding.vpExpDetail
-        )
-        window.exitTransition = TransitionUtils.getExpDetailWindowTransition(
-            this,
-            binding.viewHeaderBg, binding.vpExpDetail
-        )
+        window.enterTransition =
+            TransitionUtils.getExpDetailWindowTransition(
+                this,
+                binding.viewHeaderBg, binding.vpExpDetail,
+            )
+        window.exitTransition =
+            TransitionUtils.getExpDetailWindowTransition(
+                this,
+                binding.viewHeaderBg, binding.vpExpDetail,
+            )
     }
 
     private fun setSharedElementNames() {
@@ -91,7 +93,7 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
     }
 
     private fun getDetails() {
-        //bla
+        // bla
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.getExpDetail(documentID ?: "").collectLatest {
@@ -136,19 +138,20 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
         }
     }
 
-    override fun setBinding(inflater: LayoutInflater) =
-        ActivityExperienceDetailBinding.inflate(inflater)
+    override fun setBinding(inflater: LayoutInflater) = ActivityExperienceDetailBinding.inflate(inflater)
 
     private fun hideVP() {
-        //now we have to hide view pager
+        // now we have to hide view pager
 //        val expFadeOut = binding.tabExpDetail.createAnim(ALPHA, 1f, 0f, 300)
         val skillFadeOut = binding.vpExpDetail.createAnim(ALPHA, 1f, 0f, 300)
         val aniSet = getAnimSet(skillFadeOut)
-        aniSet.addListener(AnimatorListenerAdapter(
-            onStart = {
-                binding.vpExpDetail.layoutAnimation = recyclerViewExitAnimation
-            }
-        ))
+        aniSet.addListener(
+            AnimatorListenerAdapter(
+                onStart = {
+                    binding.vpExpDetail.layoutAnimation = recyclerViewExitAnimation
+                },
+            ),
+        )
         aniSet.start()
     }
 

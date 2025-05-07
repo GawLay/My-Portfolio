@@ -1,0 +1,159 @@
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-api than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-api than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-api than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-checks than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-checks than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-checks than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-tests than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-tests than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/gradle/libs.versions.toml:18: Warning: A newer version of com.android.tools.lint:lint-tests than 31.9.2 is available: 31.10.0 [GradleDependency]
+lint = "31.9.2"
+       ~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_template_download.xml:2: Warning: This <FrameLayout> can be replaced with a <merge> tag [MergeRootFrame]
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+^
+
+   Explanation for issues of type "MergeRootFrame":
+   If a <FrameLayout> is the root of a layout and does not provide background
+   or padding etc, it can often be replaced with a <merge> tag which is
+   slightly more efficient. Note that this depends on context, so make sure
+   you understand how the <merge> tag works before proceeding.
+
+   https://android-developers.googleblog.com/2009/03/android-layout-tricks-3-optimize-by.html
+
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/activity_attributes.xml:7: Warning: Possible overdraw: Root element paints background ?backgroundColor with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="?backgroundColor">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/activity_experience.xml:6: Warning: Possible overdraw: Root element paints background ?backgroundColor with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="?backgroundColor">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/activity_setting.xml:7: Warning: Possible overdraw: Root element paints background ?backgroundColor with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="?backgroundColor"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/activity_skill.xml:7: Warning: Possible overdraw: Root element paints background ?backgroundColor with a theme that also paints a background (inferred theme is @style/Theme_MyPortfolio_Transparent) [Overdraw]
+    android:background="?backgroundColor"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/activity_splash.xml:8: Warning: Possible overdraw: Root element paints background ?attr/colorSecondary with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="?attr/colorSecondary">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/item_faq.xml:7: Warning: Possible overdraw: Root element paints background @drawable/bg_medium_rounded with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="@drawable/bg_medium_rounded"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_call_me.xml:6: Warning: Possible overdraw: Root element paints background @drawable/ripple_surface with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="@drawable/ripple_surface"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_resume.xml:7: Warning: Possible overdraw: Root element paints background @drawable/ripple_surface with a theme that also paints a background (inferred theme is @style/Theme.MyPortfolio) [Overdraw]
+    android:background="@drawable/ripple_surface"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/fragment_experience_detail_about.xml:2: Warning: The resource R.layout.fragment_experience_detail_about appears to be unused [UnusedResources]
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+^
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/drawable/ic_launcher_background.xml:2: Warning: The resource R.drawable.ic_launcher_background appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1: Warning: The resource R.drawable.ic_launcher_foreground appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_call_me.xml:13: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageButton
+     ~~~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_github_card.xml:6: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageView
+     ~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_gmail_card.xml:6: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageView
+     ~~~~~~~~~
+/Users/eikhantmon/Documents/AndroidProjects/My-Portfolio/app/src/main/res/layout/view_linkedin_card.xml:5: Warning: Missing contentDescription attribute on image [ContentDescription]
+    <ImageView
+     ~~~~~~~~~
+
+   Explanation for issues of type "ContentDescription":
+   Non-textual widgets like ImageViews and ImageButtons should use the
+   contentDescription attribute to specify a textual description of the widget
+   such that screen readers and other accessibility tools can adequately
+   describe the user interface.
+
+   Note that elements in application screens that are purely decorative and do
+   not provide any content or enable a user action should not have
+   accessibility content descriptions. In this case, set their descriptions to
+   @null. If your app's minSdkVersion is 16 or higher, you can instead set
+   these graphical elements' android:importantForAccessibility attributes to
+   no.
+
+   Note that for text fields, you should not set both the hint and the
+   contentDescription attributes since the hint will never be shown. Just set
+   the hint.
+
+   https://developer.android.com/guide/topics/ui/accessibility/apps#special-cases
+
+0 errors, 28 warnings

@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.stateIn
 
 class SharedViewModel(
     private val expUseCase: ExpUseCase,
-    private val profileUseCase: ProfileUseCase
+    private val profileUseCase: ProfileUseCase,
 ) : ViewModel() {
     suspend fun getProfile() = profileUseCase.getProfileData().stateIn(viewModelScope)
+
     suspend fun getExpList() = expUseCase.getExpList().stateIn(viewModelScope)
 }

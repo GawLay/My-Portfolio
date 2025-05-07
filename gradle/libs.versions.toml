@@ -1,25 +1,24 @@
 [versions]
 googleServices = "4.4.2"
-kotlin = "1.9.22"
+kotlin = "2.1.0"
 
-core = "1.13.1"
+core = "1.16.0"
 material = "1.12.0"
-appcompat = "1.6.1"
-constraint = "2.1.4"
+appcompat = "1.7.0"
+constraint = "2.2.1"
 #recycler
-recycler = "1.3.2"
+recycler = "1.4.0"
 
-#lifecycle
-lifecycle = "2.5.1"
+ktlint-plugin = "12.2.0"
 
 #lint
-lint = "31.4.0"
+lint = "31.10.0"
 
 #coroutine
 coroutine = "1.7.3"
 
 #paging
-paging = "3.3.0"
+paging = "3.3.6"
 #glide
 glide = "4.15.1"
 
@@ -31,10 +30,10 @@ retrofit = "2.9.0"
 koin = "3.3.2"
 
 #firebase
-firebaseBom = "33.1.0"
+firebaseBom = "33.13.0"
 
 #workManager
-workManager = "2.9.0"
+workManager = "2.10.1"
 
 #gSon
 gSon = "2.10.1"
@@ -50,6 +49,9 @@ shapeOfView = "1.4.7"
 #pdfViewer
 afreakyelfPdfViewer = "2.1.1"
 
+#multiDex
+multidex = "2.0.1"
+
 flexBox = "3.0.0"
 shimmer = "0.5.0"
 circleImageView = "3.1.0"
@@ -57,11 +59,14 @@ progressButton = "2.1.0"
 fancyToast = "2.0.2"
 
 junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-espresso-core = "3.5.1"
+androidx-test-ext-junit = "1.2.1"
+espresso-core = "3.6.1"
+mockk = "1.13.8"
+turbine = "1.0.0"
+core-testing = "2.2.0"
 
 fireStorageUI = "7.2.0"
-jetbrainsKotlinJvm = "1.7.20"
+jetbrainsKotlinJvm = "2.1.0"
 [libraries]
 
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
@@ -73,6 +78,8 @@ constraint = { module = "androidx.constraintlayout:constraintlayout", version.re
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recycler" }
 pagination = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 glider = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine" }
 gSon = { module = "com.google.code.gson:gson", version.ref = "gSon" }
@@ -102,18 +109,26 @@ firebaseBom = { module = "com.google.firebase:firebase-bom", version.ref = "fire
 afreakyelfPdfViewr = { module = "io.github.afreakyelf:Pdf-Viewer", version.ref = "afreakyelfPdfViewer" }
 
 lintApi = { module = "com.android.tools.lint:lint-api", version.ref = "lint" }
+lintCheck = { module = "com.android.tools.lint:lint-checks", version.ref = "lint" }
+lintTools = { module = "com.android.tools.lint:lint", version.ref = "lint" }
 lintTest = { module = "com.android.tools.lint:lint-tests", version.ref = "lint" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "core-testing" }
 
 [plugins]
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
 
 [bundles]
 koins = ["core-injection", "injection", "java-injection"]
-lintCheck = ["lintApi", "lintTest"]
+lintCheck = ["lintApi", "lintCheck"]
+lintTest=["lintTools","lintTest"]
 okhttp = ["okhttps", "logginghttps"]
 firebase = ["firestore", "firestorageUI"]
-androidTest = ["junit", "androidx-test-ext-junit", "espresso-core"]
+androidTest = ["junit", "androidx-test-ext-junit", "espresso-core", "coroutines-test", "mockk", "turbine", "core-testing"]

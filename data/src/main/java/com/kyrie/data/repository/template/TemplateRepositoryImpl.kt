@@ -14,7 +14,6 @@ import com.kyrie.data.firebaseConstants.FirebaseDefaultException
 import com.kyrie.data.models.TemplateInfo
 import com.kyrie.data.remote.State
 import com.kyrie.utility.constants.FirebasePDFStrings
-import com.kyrie.utility.utility.showLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -33,17 +32,17 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
             val snap = templateListRef.get().await()
             val lists = snap.toObject(TemplateInfo::class.java)
             emit(State.success(lists))
+        } catch (e: FirebaseException) {
+            emit(
+                State.failed(
+                    e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
+                )
+            )
         } catch (e: Exception) {
             emit(
                 State.failed(
                     e.message
                         ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message
-                )
-            )
-        } catch (e: FirebaseException) {
-            emit(
-                State.failed(
-                    e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
                 )
             )
         }

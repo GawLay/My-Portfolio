@@ -36,6 +36,7 @@ import com.kyrie.utility.utility.ItemOffsetDecoration
 import com.kyrie.utility.utility.awaitViewDraw
 import com.kyrie.utility.utility.getBitmap
 import com.kyrie.utility.utility.makeSharedSceneTransitionWithDataResult
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.setMarkdown
 import com.kyrie.utility.utility.showFancyToast
 import com.kyrie.utility.utility.startGmail
@@ -46,7 +47,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.kyrie.utility.R as UtilityR
-
 
 class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
     private val viewModel: SharedViewModel by viewModel()
@@ -62,11 +62,9 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
         const val LINKEDIN = ":LINKEDIN"
     }
 
-    @Suppress("PrivatePropertyName")
-    private val REQUEST_CODE = 2000
+    private val requestCode = 2000
 
     private var urlType = ""
-
 
     override fun onCreated(savedInstanceState: Bundle?) {
         val byteArray = intent.getByteArrayExtra(BundleKeys.ABOUT_ME_BITMAP_KEY.key)
@@ -83,7 +81,6 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
         getProfile()
         getExpList()
     }
-
 
     private fun getProfile() {
         lifecycleScope.launch {
@@ -104,13 +101,11 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
                             githubUrl = data?.github_url
                             setJobDescription(data)
                         }
-
                     }
                 }
             }
         }
     }
-
 
     private fun getExpList() {
         lifecycleScope.launch {
@@ -128,7 +123,6 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
                         is State.Success -> {
                             hideShimmerAndBindList(state.data)
                         }
-
                     }
                 }
             }
@@ -138,8 +132,7 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
     override fun onClickEvents() {
         super.onClickEvents()
         binding.includeResumeHeader.apply {
-
-            btnBack.setOnClickListener {
+            imgBtnBack.setOnClickListener {
                 finishActivity()
             }
             includeGmail.root.setOnClickListener {
@@ -152,38 +145,44 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
                     putExtra(WebViewIntentKey.URL_TYPE.key, urlType)
                     putExtra(WebViewIntentKey.URL_KEY.key, githubUrl)
                 }
-                overridePendingTransition(
+                overridePendingTransitionExt(
+                    false,
                     UtilityR.anim.item_animation_slide_from_bottom,
-                    UtilityR.anim.anim_stay_still
+                    UtilityR.anim.anim_stay_still,
                 )
             }
 
             includeLinkedIn.root.setOnClickListener {
                 urlType = LINKEDIN
                 startLinkedIn {
-                    //fallback
+                    // fallback
                     startIntentWithData<WebViewActivity> {
                         putExtra(WebViewIntentKey.URL_TYPE.key, urlType)
                         putExtra(WebViewIntentKey.URL_KEY.key, linkedinUrl)
                     }
-                    overridePendingTransition(
+                    overridePendingTransitionExt(
+                        false,
                         UtilityR.anim.item_animation_slide_from_bottom,
-                        UtilityR.anim.anim_stay_still
+                        UtilityR.anim.anim_stay_still,
                     )
                 }
             }
         }
     }
 
-    private fun onItemClick(documentId: String, adapterPosition: Int, sharedView: View) {
+    private fun onItemClick(
+        documentId: String,
+        adapterPosition: Int,
+        sharedView: View,
+    ) {
         if (documentId.isEmpty()) {
             showFancyToast(getString(UtilityR.string.document_id_empty))
             return
         }
         binding.includeRcExp.rcExperience.let {
             makeSharedSceneTransitionWithDataResult<ExperienceDetailActivity>(
-                REQUEST_CODE,
-                Pair.create(sharedView, sharedView.transitionName)
+                requestCode,
+                Pair.create(sharedView, sharedView.transitionName),
             ) {
                 putExtra(ExpIntentKeys.DOCUMENT_ID.key, documentId)
                 putExtra(ExpIntentKeys.ADAPTER_POS.key, adapterPosition)
@@ -209,14 +208,15 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
                     val expList = data.data
                     binding.includeRcExp.rcExperience.layoutAnimation = recyclerViewAnimation
                     if (!expList.isNullOrEmpty()) {
-                        val sortedList = expList.sortedBy {
-                            it.priority
-                        }
+                        val sortedList =
+                            expList.sortedBy {
+                                it.priority
+                            }
                         expAdapter?.submitList(sortedList)
                     } else {
                         showFancyToast(
                             "Empty Views Will be implemented Later",
-                            type = FancyToastTypes.ERROR.value
+                            type = FancyToastTypes.ERROR.value,
                         )
                     }
                 }
@@ -228,38 +228,43 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
      * when we exit activity we show associated Views for better animation along with shared element transition
      * @see [showViews]
      * **/
-    private fun View.startAnimationSet(isShown: Boolean, onEndAnim: () -> Unit = {}) {
+    private fun View.startAnimationSet(
+        isShown: Boolean,
+        onEndAnim: () -> Unit = {},
+    ) {
         val startValue = if (isShown) 0f else 1f
         val endValue = if (isShown) 1f else 0f
         val scaleStartValue = if (isShown) 0.5f else 1f
         val fadeIn = createAnim(ALPHA, startValue, endValue)
         val scaleX = createAnim(SCALE_X, scaleStartValue, endValue, duration = HALF_SECOND)
         val scaleY = createAnim(SCALE_Y, scaleStartValue, endValue, duration = HALF_SECOND)
-        aniSet = getAnimSet(
-            fadeIn,
-            scaleX,
-            scaleY
+        aniSet =
+            getAnimSet(
+                fadeIn,
+                scaleX,
+                scaleY,
+            )
+        aniSet?.addListener(
+            AnimatorListenerAdapter(
+                onEnd = {
+                    onEndAnim.invoke()
+                },
+            ),
         )
-        aniSet?.addListener(AnimatorListenerAdapter(
-            onEnd = {
-                onEndAnim.invoke()
-            }
-        ))
         aniSet?.start()
     }
-
 
     private fun showViews() {
         lifecycleScope.launch {
             delay(300)
             binding.tvExpTitle.startAnimationSet(isShown = true)
-            binding.dividerLine.startAnimationSet(isShown = true)
+            binding.viewDividerLine.startAnimationSet(isShown = true)
             binding.includeRcExp.root.startAnimationSet(isShown = true)
             binding.includeShimmer.root.startAnimationSet(isShown = true)
             binding.includeResumeContent.root.startAnimationSet(isShown = true)
             binding.includeResumeHeader.apply {
-                btnBack.startAnimationSet(isShown = true) {
-                    //onEnd->
+                imgBtnBack.startAnimationSet(isShown = true) {
+                    // onEnd->
                     isBackVisible = true
                 }
                 llAddressContainer.startAnimationSet(isShown = true)
@@ -272,10 +277,10 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
         binding.includeResumeHeader.apply {
             llAddressContainer.hideExpAnimationSet()
             tvMyName.hideExpAnimationSet()
-            btnBack.hideExpAnimationSet()
+            imgBtnBack.hideExpAnimationSet()
         }
         binding.tvExpTitle.hideExpAnimationSet()
-        binding.dividerLine.hideExpAnimationSet()
+        binding.viewDividerLine.hideExpAnimationSet()
         binding.includeRcExp.root.hideExpAnimationSet()
         binding.includeShimmer.root.hideExpAnimationSet()
         binding.includeResumeContent.root.hideExpAnimationSet()
@@ -290,10 +295,9 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
         val endValue = 0f
         val fadeIn = createAnim(ALPHA, startValue, endValue, duration = 200L)
         startAnimSet(
-            fadeIn
+            fadeIn,
         )
     }
-
 
     private fun setSharedTransitions() {
         window.sharedElementEnterTransition =
@@ -306,16 +310,15 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
             val string = data.description_two ?: getString(UtilityR.string.resume_about_me)
             setMarkdown(
                 string,
-                binding.includeResumeContent.tvDescription
+                binding.includeResumeContent.tvDescription,
             )
         } else {
             binding.includeResumeHeader.tvMyName.text = getString(UtilityR.string.my_default_name)
             setMarkdown(
                 getString(UtilityR.string.resume_about_me),
-                binding.includeResumeContent.tvDescription
+                binding.includeResumeContent.tvDescription,
             )
         }
-
     }
 
     private fun awaitViewDraw() {
@@ -326,17 +329,19 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
     }
 
     private fun setWindowTransitions() {
-        window.enterTransition = TransitionUtils.createResumeEnterTransition(
-            this,
-            targetViews = arrayOf<View>(
-                binding.includeResumeContent.tvDescription,
-                binding.includeShimmer.root,
-                binding.includeRcExp.rcExperience
-            ),
-            binding.includeResumeHeader.llAddressContainer,
-            binding.includeResumeHeader.ivProfile,
-            binding.includeResumeHeader.tvMyName
-        )
+        window.enterTransition =
+            TransitionUtils.createResumeEnterTransition(
+                this,
+                targetViews =
+                    arrayOf<View>(
+                        binding.includeResumeContent.tvDescription,
+                        binding.includeShimmer.root,
+                        binding.includeRcExp.rcExperience,
+                    ),
+                binding.includeResumeHeader.llAddressContainer,
+                binding.includeResumeHeader.ivProfile,
+                binding.includeResumeHeader.tvMyName,
+            )
     }
 
     private fun setSharedElementNames() {
@@ -355,13 +360,12 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
     private fun finishActivity() {
         lifecycleScope.launch {
             hideViews()
-            //to prevent awkward  status color change,
-            //used anim update progress   instead of directly change then revert circular reveal animation
+            // to prevent awkward  status color change,
+            // used anim update progress   instead of directly change then revert circular reveal animation
             changeStatusColorFromDefaultToSecondary(600L)
             delay(200)
             setResult(RESULT_OK)
             finishAfterTransition()
         }
     }
-
 }

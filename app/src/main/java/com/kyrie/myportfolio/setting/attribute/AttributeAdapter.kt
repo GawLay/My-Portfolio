@@ -19,29 +19,39 @@ class AttributeAdapter : ListAdapter<Attributes, AttributeAdapter.AttributeVH>(A
                 setHtmlText(item.attributeLine)
                 movementMethod = LinkMovementMethod.getInstance()
             }
-
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttributeVH {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): AttributeVH {
         val binding =
             ItemAttributeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AttributeVH(binding)
     }
 
-    override fun onBindViewHolder(holder: AttributeVH, position: Int) {
+    override fun onBindViewHolder(
+        holder: AttributeVH,
+        position: Int,
+    ) {
         val item = getItem(position)
         holder.bind(item)
     }
 }
 
 object AttributeDiffUtil : DiffUtil.ItemCallback<Attributes>() {
-    override fun areItemsTheSame(oldItem: Attributes, newItem: Attributes): Boolean {
+    override fun areItemsTheSame(
+        oldItem: Attributes,
+        newItem: Attributes,
+    ): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: Attributes, newItem: Attributes): Boolean {
+    override fun areContentsTheSame(
+        oldItem: Attributes,
+        newItem: Attributes,
+    ): Boolean {
         return oldItem.name == newItem.name && oldItem.attributeLine == newItem.attributeLine
     }
-
 }

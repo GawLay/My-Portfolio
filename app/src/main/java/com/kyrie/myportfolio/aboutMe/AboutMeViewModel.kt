@@ -6,7 +6,8 @@ import com.kyrie.domain.ProfileUseCase
 import kotlinx.coroutines.flow.stateIn
 
 class AboutMeViewModel(private val profileUseCase: ProfileUseCase) : ViewModel() {
-    suspend fun getProfile() = profileUseCase.getProfileData().stateIn(
-        scope = viewModelScope
-    )
+    suspend fun getProfile() =
+        profileUseCase.getProfileData().stateIn(
+            scope = viewModelScope,
+        )
 }

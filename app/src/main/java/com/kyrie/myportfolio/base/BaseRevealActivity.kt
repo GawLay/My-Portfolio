@@ -9,8 +9,11 @@ import com.kyrie.utility.animation.CircularRevealAnim
 abstract class BaseRevealActivity<T : ViewBinding> : BaseUtilityAppCompat() {
     lateinit var binding: T
     var revealAnimation: CircularRevealAnim? = null
+
     abstract fun onCreated(savedInstanceState: Bundle?)
+
     abstract fun setBinding(inflater: LayoutInflater): T
+
     abstract fun handleBackPress()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,13 +27,15 @@ abstract class BaseRevealActivity<T : ViewBinding> : BaseUtilityAppCompat() {
         onClickEvents()
     }
 
-    private val backPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            handleBackPress()
+    private val backPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackPress()
+            }
         }
-    }
 
     open fun requestWindowFeature() {}
+
     open fun onClickEvents() {}
 
     /**
@@ -41,8 +46,7 @@ abstract class BaseRevealActivity<T : ViewBinding> : BaseUtilityAppCompat() {
      * **/
     private fun setupRevealAnim() {
         val intent = intent
-        //start Reveal
+        // start Reveal
         revealAnimation = CircularRevealAnim(binding.root, intent, this)
     }
-
 }

@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateInterpolator
-import androidx.core.animation.addListener
-import androidx.core.animation.doOnEnd
-import androidx.core.animation.doOnStart
+import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.showLog
 
 class CircularRevealAnim(
@@ -78,7 +76,11 @@ class CircularRevealAnim(
             override fun onAnimationEnd(animation: Animator) {
                 mRootView.visibility = View.INVISIBLE
                 mActivity.finish()
-                mActivity.overridePendingTransition(0, 0)
+                mActivity.overridePendingTransitionExt(
+                    true,
+                    0,
+                    0
+                )
             }
         })
         circularReveal.start()

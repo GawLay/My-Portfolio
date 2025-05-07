@@ -9,11 +9,12 @@ import com.kyrie.myportfolio.templates.TemplateViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
-val viewModelModules = module {
-    viewModelOf(::AboutMeViewModel)
-    viewModelOf(::SkillViewModel)
-    viewModelOf(::SharedViewModel)
-    viewModelOf(::ExperienceDetailViewModel)
-    viewModelOf(::TemplateViewModel)
-    viewModelOf(::FaqViewModel)
-}
+val viewModelModules =
+    module {
+        viewModelOf(::AboutMeViewModel)
+        viewModelOf(::SkillViewModel)
+        viewModelOf(::SharedViewModel)
+        viewModelOf(::ExperienceDetailViewModel)
+        viewModelOf(::TemplateViewModel)
+        viewModelOf(::FaqViewModel)
+    }

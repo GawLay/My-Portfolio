@@ -17,15 +17,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class ExperienceDetailInfoFragment : BaseFragment<FragmentExperienceDetailInfoBinding>() {
-
     private val viewModel: ExperienceDetailViewModel by activityViewModel()
     private var expDetailAdapter: ExperienceDetailAdapter? = null
     private var skillChipAdapter: SkillChipAdapter? = null
 
-
     override fun setBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?
+        container: ViewGroup?,
     ): FragmentExperienceDetailInfoBinding {
         return FragmentExperienceDetailInfoBinding.inflate(inflater, container, false)
     }
@@ -33,7 +31,6 @@ class ExperienceDetailInfoFragment : BaseFragment<FragmentExperienceDetailInfoBi
     override fun initViews() {
         super.initViews()
         setRc()
-
     }
 
     override fun observe() {
