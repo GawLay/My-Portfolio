@@ -31,5 +31,5 @@ jobs:
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
 
-      - name: Run ktlint
-        run: ./gradlew ktLintCheckFormat --no-daemon --stacktrace echo "::notice::View lint results in the 'Annotations' tab below"
+      - name: Running KotlinLint Check
+        run: ./gradlew ktLintCheckFormat --no-daemon --stacktrace
