@@ -1,11 +1,14 @@
 pipeline {
     agent any
+    triggers {
+       githubPush()
+    }
     parameters {
         choice(name: 'BUILD_TYPE', choices: ['apk', 'bundle'], description: 'Choose build type')
     }
     stages {
          stage('Checkout') {
-                    steps {
+                steps {
                     // Checkout the latest code from the branch that triggered the build
                     checkout scm
                     }
@@ -13,7 +16,7 @@ pipeline {
 
         stage('Prepare Environment') {
             when {
-                            expression { env.BRANCH_NAME.contains('release') }
+                  expression { env.BRANCH_NAME.contains('release') }
             }
             steps {
                     // Ensure Gradle wrapper is executable
