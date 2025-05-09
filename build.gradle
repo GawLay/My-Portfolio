@@ -8,6 +8,7 @@ plugins {
     id 'com.android.application' version '8.9.2' apply false
     id 'com.android.library' version '8.9.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
+    id 'base'
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
 
@@ -34,8 +35,9 @@ tasks.register("installGitHooks") {
         }
     }
 }
-
 // Auto-run installGitHooks after clean
-tasks.named("clean") {
-    dependsOn(tasks.named("installGitHooks"))
+afterEvaluate {
+    tasks.named('clean').configure {
+        dependsOn(tasks.named('installGitHooks'))
+    }
 }
