@@ -1,33 +1,49 @@
 pipeline {
     agent any
     triggers {
-       githubPush()
+        githubPush()
+    }
+    environment {
+            ANDROID_HOME = '/opt/android-sdk'
     }
     parameters {
         choice(name: 'BUILD_TYPE', choices: ['apk', 'bundle'], description: 'Choose build type')
     }
     stages {
-         stage('Checkout') {
-                steps {
-                    // Checkout the latest code from the branch that triggered the build
-                    checkout scm
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Check Latest Release Branch') {
+            when {
+                expression { env.BRANCH_NAME?.contains('release') ?: false }
+            }
+            steps {
+                script {
+                    // Get the latest release branch by sorting tags or branches
+                    def latestRelease = sh(script: "git ls-remote --heads origin | grep 'refs/heads/release/' | sort -V | tail -n 1 | awk '{print \$2}' | sed 's/refs\\/heads\\///'", returnStdout: true).trim()
+                    if (env.BRANCH_NAME != latestRelease) {
+                        error "This is not the latest release branch (${latestRelease}). Stopping build."
                     }
-                 }
+                }
+            }
+        }
 
         stage('Prepare Environment') {
             when {
-                  expression { env.BRANCH_NAME.contains('release') }
+                expression { env.BRANCH_NAME?.contains('release') ?: false }
             }
             steps {
-                    // Ensure Gradle wrapper is executable
-                    sh 'chmod +x ./gradlew'
-             }
+                sh 'chmod +x ./gradlew'
+            }
         }
 
         stage('Build and Sign APK') {
             when {
-                  expression { env.BRANCH_NAME.contains('release') }
-             }
+                expression { env.BRANCH_NAME?.contains('release') ?: false }
+            }
             steps {
                 withCredentials([
                     file(credentialsId: 'android_keystore', variable: 'KEYSTORE_FILE'),
@@ -35,63 +51,54 @@ pipeline {
                     string(credentialsId: 'profolio_key_alias', variable: 'KEY_ALIAS')
                 ]) {
                     script {
-                        // Set the environment variables for Gradle
                         def keystorePath = env.KEYSTORE_FILE
-
-                        // Echo environment variables to check if they're correctly set
                         echo "Keystore Path: ${keystorePath}"
                         echo "Keystore Password: ${env.KEYSTORE_PASSWORD}"
                         echo "Key Alias: ${env.KEY_ALIAS}"
-
-                        // Build and sign APK using Gradle
-                        // Interpolate environment variables in the shell script
-                     if (params.BUILD_TYPE == 'apk') {
-                        sh """
-                        ./gradlew clean assembleRelease \
-                        -Pandroid.injected.signing.store.file='${keystorePath}' \
-                        -Pandroid.injected.signing.store.password='${env.KEYSTORE_PASSWORD}' \
-                        -Pandroid.injected.signing.key.alias='${env.KEY_ALIAS}' \
-                        -Pandroid.injected.signing.key.password='${env.KEYSTORE_PASSWORD}'
-                         """
-                     }else{
-                        // Upload App Bundle
-                       // Build and sign App Bundle using Gradle
-                        sh """
-                         ./gradlew clean bundleRelease \
-                        -Pandroid.injected.signing.store.file='${keystorePath}' \
-                        -Pandroid.injected.signing.store.password='${env.KEYSTORE_PASSWORD}' \
-                        -Pandroid.injected.signing.key.alias='${env.KEY_ALIAS}' \
-                        -Pandroid.injected.signing.key.password='${env.KEYSTORE_PASSWORD}'
-                        """
-                     }
-
+                        if (params.BUILD_TYPE == 'apk') {
+                            sh """
+                            ./gradlew clean assembleRelease \
+                            -Pandroid.injected.signing.store.file='${keystorePath}' \
+                            -Pandroid.injected.signing.store.password='${env.KEYSTORE_PASSWORD}' \
+                            -Pandroid.injected.signing.key.alias='${env.KEY_ALIAS}' \
+                            -Pandroid.injected.signing.key.password='${env.KEYSTORE_PASSWORD}'
+                            """
+                        } else {
+                            sh """
+                            ./gradlew clean bundleRelease \
+                            -Pandroid.injected.signing.store.file='${keystorePath}' \
+                            -Pandroid.injected.signing.store.password='${env.KEYSTORE_PASSWORD}' \
+                            -Pandroid.injected.signing.key.alias='${env.KEY_ALIAS}' \
+                            -Pandroid.injected.signing.key.password='${env.KEYSTORE_PASSWORD}'
+                            """
+                        }
+                    }
                 }
             }
         }
-//         stage('Upload to Google Play') {
-//             when {
-//                     expression { env.BRANCH_NAME.contains('release') }
-//             }
-//             steps {
-//                 withCredentials([file(credentialsId: "my-portfolio-f5976-3c69f2d2c4f9.json", variable: 'SERVICE_ACCOUNT_JSON')]) {
-//                     if (params.BUILD_TYPE == 'apk') {
-//                         googlePlay {
-//                             serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
-//                             trackName = 'production'
-//                             apkFilesPattern = 'app/build/outputs/apk/release/app-release-aligned.apk'
-//                         }
-//                     }else{
-//                         googlePlay {
-//                             serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
-//                             trackName = 'production'
-//                             bundleFilesPattern = 'app/build/outputs/bundle/release/app-release.aab'
-//                         }
-//                     }
-//                 }
-//             }
-//         }
 
-    }
+        // stage('Upload to Google Play') {
+        //     when {
+        //         expression { env.BRANCH_NAME?.contains('release') ?: false }
+        //     }
+        //     steps {
+        //         withCredentials([file(credentialsId: "my-portfolio-f5976-3c69f2d2c4f9.json", variable: 'SERVICE_ACCOUNT_JSON')]) {
+        //             if (params.BUILD_TYPE == 'apk') {
+        //                 googlePlay {
+        //                     serviceAccountCredentialsId = 'jenkin-playservice-secret-json'
+        //                     trackName = 'production'
+        //                     apkFilesPattern = 'app/build/outputs/apk/release/app-release-aligned.apk'
+        //                 }
+        //             } else {
+        //                 googlePlay {
+        //                     serviceAccountCredentialsId = 'jenkin-playservice-secret-json'
+        //                     trackName = 'production'
+        //                     bundleFilesPattern = 'app/build/outputs/bundle/release/app-release.aab'
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
     post {
         always {
