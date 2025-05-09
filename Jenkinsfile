@@ -10,6 +10,17 @@ pipeline {
         choice(name: 'BUILD_TYPE', choices: ['apk', 'bundle'], description: 'Choose build type')
     }
     stages {
+        stage('Debug Branch') {
+                  steps {
+                      script {
+                          echo "Current BRANCH_NAME: ${env.BRANCH_NAME}"
+                          echo "Git branch from SCM: ${scm.branches[0].name}"
+                          if (!env.BRANCH_NAME) {
+                              error "BRANCH_NAME is not set. Ensure the pipeline is triggered for a release/* branch."
+                          }
+                      }
+                  }
+         }
         stage('Checkout') {
             steps {
                 checkout scm
@@ -31,19 +42,19 @@ pipeline {
             }
         }
 
-        stage('Prepare Environment') {
-            when {
-                expression { env.BRANCH_NAME?.contains('release') ?: false }
-            }
-            steps {
-                sh 'chmod +x ./gradlew'
-            }
-        }
+       stage('Prepare Environment') {
+             when {
+                   expression { return env.BRANCH_NAME && env.BRANCH_NAME.contains('release') }
+                   }
+                   steps {
+                         sh 'chmod +x ./gradlew'
+                   }
+       }
 
         stage('Build and Sign APK') {
-            when {
-                expression { env.BRANCH_NAME?.contains('release') ?: false }
-            }
+             when {
+                  expression { return env.BRANCH_NAME && env.BRANCH_NAME.contains('release') }
+              }
             steps {
                 withCredentials([
                     file(credentialsId: 'android_keystore', variable: 'KEYSTORE_FILE'),
