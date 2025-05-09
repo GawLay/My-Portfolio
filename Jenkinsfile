@@ -10,17 +10,6 @@ pipeline {
         choice(name: 'BUILD_TYPE', choices: ['apk', 'bundle'], description: 'Choose build type')
     }
     stages {
-        stage('Debug Branch') {
-                  steps {
-                      script {
-                          echo "Current BRANCH_NAME: ${env.BRANCH_NAME}"
-                          echo "Git branch from SCM: ${scm.branches[0].name}"
-                          if (!env.BRANCH_NAME) {
-                              error "BRANCH_NAME is not set. Ensure the pipeline is triggered for a release/* branch."
-                          }
-                      }
-                  }
-         }
         stage('Checkout') {
             steps {
                 checkout scm
@@ -28,9 +17,9 @@ pipeline {
         }
 
         stage('Check Latest Release Branch') {
-            when {
-                expression { env.BRANCH_NAME?.contains('release') ?: false }
-            }
+         when {
+             expression { env.BRANCH_NAME?.startsWith("release/") }
+         }
             steps {
                 script {
                     // Get the latest release branch by sorting tags or branches
