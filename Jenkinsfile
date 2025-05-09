@@ -65,28 +65,28 @@ pipeline {
                 }
             }
         }
-        stage('Upload to Google Play') {
-            when {
-                    expression { env.BRANCH_NAME.contains('release') }
-            }
-            steps {
-                withCredentials([file(credentialsId: "my-portfolio-f5976-3c69f2d2c4f9.json", variable: 'SERVICE_ACCOUNT_JSON')]) {
-                    if (params.BUILD_TYPE == 'apk') {
-                        googlePlay {
-                            serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
-                            trackName = 'production'
-                            apkFilesPattern = 'app/build/outputs/apk/release/app-release-aligned.apk'
-                        }
-                    }else{
-                        googlePlay {
-                            serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
-                            trackName = 'production'
-                            bundleFilesPattern = 'app/build/outputs/bundle/release/app-release.aab'
-                        }
-                    }
-                }
-            }
-        }
+//         stage('Upload to Google Play') {
+//             when {
+//                     expression { env.BRANCH_NAME.contains('release') }
+//             }
+//             steps {
+//                 withCredentials([file(credentialsId: "my-portfolio-f5976-3c69f2d2c4f9.json", variable: 'SERVICE_ACCOUNT_JSON')]) {
+//                     if (params.BUILD_TYPE == 'apk') {
+//                         googlePlay {
+//                             serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
+//                             trackName = 'production'
+//                             apkFilesPattern = 'app/build/outputs/apk/release/app-release-aligned.apk'
+//                         }
+//                     }else{
+//                         googlePlay {
+//                             serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
+//                             trackName = 'production'
+//                             bundleFilesPattern = 'app/build/outputs/bundle/release/app-release.aab'
+//                         }
+//                     }
+//                 }
+//             }
+//         }
 
     }
     }
