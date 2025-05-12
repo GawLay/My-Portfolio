@@ -5,8 +5,39 @@ buildscript {
     }
 }
 plugins {
-    id 'com.android.application' version '8.9.2' apply false
-    id 'com.android.library' version '8.9.2' apply false
+    id 'com.android.application' version '8.10.0' apply false
+    id 'com.android.library' version '8.10.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
+    id 'base'
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+}
+
+tasks.register("installGitHooks") {
+    group = "development"
+    description = "Install Git hooks from .githooks directory to .git/hooks"
+
+    doLast {
+        def hooksDir = file("${rootDir}/.githooks")
+        def gitHooksDir = file("${rootDir}/.git/hooks")
+
+        if (!hooksDir.exists()) {
+            logger.warn("⚠️ .githooks directory not found! Create it to share hooks.")
+            return
+        }
+
+        hooksDir.listFiles()?.each { hook ->
+            if (hook.isFile()) {
+                def target = file("${gitHooksDir}/${hook.name}")
+                hook.copyTo(target, overwrite = true)
+                target.setExecutable(true)
+                logger.lifecycle("✓ Installed hook: ${target.name}")
+            }
+        }
+    }
+}
+// Auto-run installGitHooks after clean
+afterEvaluate {
+    tasks.named('clean').configure {
+        dependsOn(tasks.named('installGitHooks'))
+    }
 }

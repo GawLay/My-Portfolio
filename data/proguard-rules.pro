@@ -19,6 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn org.apiguardian.api.API
 -keep class com.kyrie.data.models.** {*;}
 # If using Firebase Firestore, keep the classes and fields annotated with @Exclude
 -keepattributes *Annotation*
