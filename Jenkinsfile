@@ -1,98 +1,126 @@
+def ANDROID_KEYSTORE_ID = 'android_keystore'
+def KEYSTORE_PASSWORD_ID = 'profolio_key_password'
+def KEYSTORE_ALIAS_ID = 'profolio_key_alias'
+def GOOGLE_SERVICE_JSON_ID = "google-services-json-portfolio"
+
 pipeline {
-    agent any
-    parameters {
-        choice(name: 'BUILD_TYPE', choices: ['apk', 'bundle'], description: 'Choose build type')
+    agent  any
+
+    triggers {
+        githubPush()
     }
+
+    environment {
+        GRADLE_USER_HOME = "${WORKSPACE}/.gradle"
+        _JAVA_OPTIONS = "-Duser.home=${WORKSPACE}"
+        PATH = "${JAVA_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${env.PATH}"
+        GRADLE_OPTS = "-Dorg.gradle.cache.size=500000000"
+    }
+
     stages {
-         stage('Checkout') {
-                    steps {
-                    // Checkout the latest code from the branch that triggered the build
-                    checkout scm
-                    }
-                 }
+        stage('Checkout') {
+            steps {
+                checkout scm
+                script {
+                    echo "Building branch: ${env.BRANCH_NAME}"
+                    sh '''
+                        whoami
+                        ls -la ${WORKSPACE}
+                        java -version
+                        echo $JAVA_HOME
+                        echo $PATH
+                        sdkmanager --version
+                        docker --version || echo "Docker CLI not available"
+                        ls -la /var/run/docker.sock || echo "Docker socket not accessible"
+                        groups
+                    '''
+                }
+            }
+        }
 
         stage('Prepare Environment') {
             when {
-                            expression { env.BRANCH_NAME.contains('release') }
+                expression { return env.BRANCH_NAME ==~ /^release\/.*/ }
             }
             steps {
-                    // Ensure Gradle wrapper is executable
-                    sh 'chmod +x ./gradlew'
-             }
+                withCredentials([file(credentialsId: GOOGLE_SERVICE_JSON_ID, variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh '''
+                        mkdir -p app/src/release/
+                        cp ${GOOGLE_SERVICES_JSON} app/google-services.json
+                    '''
+                }
+            }
         }
 
-        stage('Build and Sign APK') {
+        stage('Clean Build Artifacts') {
+            steps {
+                sh '''
+                    ./gradlew clean
+                    rm -rf ${GRADLE_USER_HOME}
+                '''
+            }
+        }
+
+        stage('Build APK') {
             when {
-                  expression { env.BRANCH_NAME.contains('release') }
-             }
+                expression { return env.BRANCH_NAME ==~ /^release\/.*/ }
+            }
             steps {
                 withCredentials([
-                    file(credentialsId: 'android_keystore', variable: 'KEYSTORE_FILE'),
-                    string(credentialsId: 'profolio_key_password', variable: 'KEYSTORE_PASSWORD'),
-                    string(credentialsId: 'profolio_key_alias', variable: 'KEY_ALIAS')
+                    file(credentialsId: ANDROID_KEYSTORE_ID, variable: 'KEYSTORE_FILE'),
+                    string(credentialsId: KEYSTORE_PASSWORD_ID, variable: 'KEYSTORE_PASSWORD'),
+                    string(credentialsId: KEYSTORE_ALIAS_ID, variable: 'KEY_ALIAS')
                 ]) {
-                    script {
-                        // Set the environment variables for Gradle
-                        def keystorePath = env.KEYSTORE_FILE
-
-                        // Echo environment variables to check if they're correctly set
-                        echo "Keystore Path: ${keystorePath}"
-                        echo "Keystore Password: ${env.KEYSTORE_PASSWORD}"
-                        echo "Key Alias: ${env.KEY_ALIAS}"
-
-                        // Build and sign APK using Gradle
-                        // Interpolate environment variables in the shell script
-                     if (params.BUILD_TYPE == 'apk') {
-                        sh """
-                        ./gradlew clean assembleRelease \
-                        -Pandroid.injected.signing.store.file='${keystorePath}' \
-                        -Pandroid.injected.signing.store.password='${env.KEYSTORE_PASSWORD}' \
-                        -Pandroid.injected.signing.key.alias='${env.KEY_ALIAS}' \
-                        -Pandroid.injected.signing.key.password='${env.KEYSTORE_PASSWORD}'
-                         """
-                     }else{
-                        // Upload App Bundle
-                       // Build and sign App Bundle using Gradle
-                        sh """
-                         ./gradlew clean bundleRelease \
-                        -Pandroid.injected.signing.store.file='${keystorePath}' \
-                        -Pandroid.injected.signing.store.password='${env.KEYSTORE_PASSWORD}' \
-                        -Pandroid.injected.signing.key.alias='${env.KEY_ALIAS}' \
-                        -Pandroid.injected.signing.key.password='${env.KEYSTORE_PASSWORD}'
-                        """
-                     }
-
+                    sh '''
+                        ./gradlew assembleRelease \
+                            --no-daemon \
+                            --no-parallel \
+                            -Pandroid.injected.signing.store.file="$KEYSTORE_FILE" \
+                            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+                            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+                            -Pandroid.injected.signing.key.password="$KEYSTORE_PASSWORD"
+                    '''
+                    archiveArtifacts artifacts: 'app/build/outputs/apk/release/*.apk', allowEmptyArchive: false
                 }
             }
         }
-        stage('Upload to Google Play') {
+
+        stage('Build AAB') {
             when {
-                    expression { env.BRANCH_NAME.contains('release') }
+                expression { return env.BRANCH_NAME ==~ /^release\/.*/ }
             }
             steps {
-                withCredentials([file(credentialsId: "my-portfolio-f5976-3c69f2d2c4f9.json", variable: 'SERVICE_ACCOUNT_JSON')]) {
-                    if (params.BUILD_TYPE == 'apk') {
-                        googlePlay {
-                            serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
-                            trackName = 'production'
-                            apkFilesPattern = 'app/build/outputs/apk/release/app-release-aligned.apk'
-                        }
-                    }else{
-                        googlePlay {
-                            serviceAccountCredentialsId = 'jenkin-playservice-secret-json' // Ensure this matches your credential ID
-                            trackName = 'production'
-                            bundleFilesPattern = 'app/build/outputs/bundle/release/app-release.aab'
-                        }
-                    }
+                withCredentials([
+                    file(credentialsId: ANDROID_KEYSTORE_ID, variable: 'KEYSTORE_FILE'),
+                    string(credentialsId: KEYSTORE_PASSWORD_ID, variable: 'KEYSTORE_PASSWORD'),
+                    string(credentialsId: KEYSTORE_ALIAS_ID, variable: 'KEY_ALIAS')
+                ]) {
+                    sh '''
+                        ./gradlew bundleRelease \
+                            --no-daemon \
+                            --no-parallel \
+                            -Pandroid.injected.signing.store.file="$KEYSTORE_FILE" \
+                            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+                            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+                            -Pandroid.injected.signing.key.password="$KEYSTORE_PASSWORD"
+                    '''
+                    archiveArtifacts artifacts: 'app/build/outputs/bundle/release/*.aab', allowEmptyArchive: false
                 }
             }
         }
+    }
 
-    }
-    }
     post {
         always {
             cleanWs()
+            script {
+                currentBuild.description = "Built APK and AAB from ${env.BRANCH_NAME}"
+            }
+        }
+        failure {
+            emailext body: "Build failed: ${env.BUILD_URL}",
+                     subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     to: 'phyoaz14@gmail.com'
         }
     }
 }
