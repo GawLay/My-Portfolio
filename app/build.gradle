@@ -24,8 +24,8 @@ android {
         applicationId "com.kyrie.myportfolio"
         minSdk 23
         targetSdk 35
-        versionCode 26
-        versionName "26"
+        versionCode 27
+        versionName "27"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
