@@ -108,6 +108,39 @@ pipeline {
                 }
             }
         }
+        stage('Upload to Google Play') {
+            when {
+                expression {
+                    return env.BRANCH_NAME ==~ /^release\/.*/
+                }
+            }
+            steps {
+                script {
+                    def aabPath = 'app/build/outputs/bundle/release/app-release.aab'
+                    if (!fileExists(aabPath)) {
+                        error("AAB file not found at ${aabPath}")
+                    }
+
+                    def releaseNotes = readFile('release/release-notes.txt').trim()
+
+                    googlePlayPublisher(
+                        googlePlayAccountCredentialsId: 'jenkin-playservice-secret-json',
+                        trackName: 'production',
+                        apkFilesPattern: '', // No APKs
+                        bundleFilesPattern: aabPath,
+                        expansionFilesPattern: '',
+                        recentChanges: [
+                            'en-US': releaseNotes,
+                            'default': "Automated upload (Jenkins)"
+                        ],
+                        rolloutPercentage: 100,
+                        timeoutMinutes: 15
+                    )
+
+                    echo "Uploaded ${aabPath} to Google Play with release notes"
+                }
+            }
+        }
     }
 
     post {
