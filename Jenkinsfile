@@ -117,27 +117,30 @@ pipeline {
             steps {
                 script {
                     def aabPath = 'app/build/outputs/bundle/release/app-release.aab'
+                    def notesPath = 'release/release-notes.txt'
                     if (!fileExists(aabPath)) {
                         error("AAB file not found at ${aabPath}")
                     }
-
-                    def releaseNotes = readFile('release/release-notes.txt').trim()
-
-                    googlePlayPublisher(
-                        googlePlayAccountCredentialsId: 'jenkin-playservice-secret-json',
+                    if (!fileExists(notesPath)) {
+                        error("❌ Release notes not found at ${notesPath}")
+                    }
+                    def releaseNotes = readFile(notesPath).trim()
+                    if (releaseNotes.isEmpty()) {
+                       releaseNotes = "Bug fixes and improvements (${env.BUILD_NUMBER})"
+                       echo "⚠️ Using fallback release notes"
+                    }
+                    androidApkUpload(
+                        googleCredentialsId: 'PlayStore-via-Jenkins',
+                        filesPattern: aabPath,
                         trackName: 'production',
-                        apkFilesPattern: '', // No APKs
-                        bundleFilesPattern: aabPath,
-                        expansionFilesPattern: '',
-                        recentChanges: [
-                            'en-US': releaseNotes,
-                            'default': "Automated upload (Jenkins)"
-                        ],
-                        rolloutPercentage: 100,
-                        timeoutMinutes: 15
+                        rolloutPercentage: '100',
+                        deobfuscationFilesPattern: 'app/build/outputs/mapping/release/mapping.txt',
+                        recentChangeList: [
+                            [language: 'en-US', text: releaseNotes]
+                        ]
                     )
 
-                    echo "Uploaded ${aabPath} to Google Play with release notes"
+                    echo "✅Uploaded ${aabPath} to Google Play with release notes"
                 }
             }
         }
@@ -149,11 +152,6 @@ pipeline {
             script {
                 currentBuild.description = "Built APK and AAB from ${env.BRANCH_NAME}"
             }
-        }
-        failure {
-            emailext body: "Build failed: ${env.BUILD_URL}",
-                     subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     to: 'phyoaz14@gmail.com'
         }
     }
 }
