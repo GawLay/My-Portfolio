@@ -26,33 +26,33 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
             .document(FirebaseCollections.LIST.name.lowercase())
     private val workManager = WorkManager.getInstance(context)
 
-    override suspend fun getTemplateList(): Flow<State<TemplateInfo?>> = flow {
-        emit(State.loading())
-        try {
-            val snap = templateListRef.get().await()
-            val lists = snap.toObject(TemplateInfo::class.java)
-            emit(State.success(lists))
-        } catch (e: FirebaseException) {
-            emit(
-                State.failed(
-                    e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
+    override suspend fun getTemplateList(): Flow<State<TemplateInfo?>> =
+        flow {
+            emit(State.loading())
+            try {
+                val snap = templateListRef.get().await()
+                val lists = snap.toObject(TemplateInfo::class.java)
+                emit(State.success(lists))
+            } catch (e: FirebaseException) {
+                emit(
+                    State.failed(
+                        e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
-        } catch (e: Exception) {
-            emit(
-                State.failed(
-                    e.message
-                        ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message
+            } catch (e: Exception) {
+                emit(
+                    State.failed(
+                        e.message
+                            ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
+            }
         }
-    }
-
 
     override suspend fun fetchPdfUrl(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
-        onFirebaseStoragePdfUrl: (String) -> Unit
+        onFirebaseStoragePdfUrl: (String) -> Unit,
     ) {
         val storage = Firebase.storage
         val storageRef = storage.reference.child(FirebaseCollections.PDF.name.lowercase())
@@ -74,18 +74,17 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
         }
     }
 
-
     override fun startDownloadPdf(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
         onWorkManagerInstance: (WorkManager, UUID) -> Unit,
-        intentDownloadUrl: String
+        intentDownloadUrl: String,
     ) {
         if (intentDownloadUrl.isNotEmpty()) {
             queueWorkManagerAndDownload(
                 intentDownloadUrl,
                 fileNameToDownload,
-                onWorkManagerInstance
+                onWorkManagerInstance,
             )
         } else {
             val storage = Firebase.storage
@@ -99,7 +98,7 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
                             queueWorkManagerAndDownload(
                                 downloadUrl,
                                 fileNameToDownload,
-                                onWorkManagerInstance
+                                onWorkManagerInstance,
                             )
                         }.addOnFailureListener {
                             onFailureListener.invoke(it)
@@ -113,20 +112,21 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
         }
     }
 
-
     private fun queueWorkManagerAndDownload(
         url: String,
         fileName: String,
-        onWorkManagerInstance: (WorkManager, UUID) -> Unit
+        onWorkManagerInstance: (WorkManager, UUID) -> Unit,
     ) {
-        val data = Data.Builder()
-            .putString(FirebasePDFStrings.PDF_URL_KEY.value, url)
-            .putString(FirebasePDFStrings.PDF_FILE_NAME_KEY.value, fileName)
-            .build()
+        val data =
+            Data.Builder()
+                .putString(FirebasePDFStrings.PDF_URL_KEY.value, url)
+                .putString(FirebasePDFStrings.PDF_FILE_NAME_KEY.value, fileName)
+                .build()
 
-        downloadWorkRequest = OneTimeWorkRequestBuilder<TemplateWorkManagerImpl>()
-            .setInputData(data)
-            .build()
+        downloadWorkRequest =
+            OneTimeWorkRequestBuilder<TemplateWorkManagerImpl>()
+                .setInputData(data)
+                .build()
 
         workManager.enqueue(downloadWorkRequest!!)
         onWorkManagerInstance.invoke(workManager, downloadWorkRequest!!.id)
@@ -137,5 +137,4 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
             workManager.cancelWorkById(downloadWorkRequest!!.id)
         }
     }
-
 }

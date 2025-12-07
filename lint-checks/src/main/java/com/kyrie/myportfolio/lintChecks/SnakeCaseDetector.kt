@@ -57,7 +57,7 @@ class SnakeCaseDetector : Detector(), Detector.XmlScanner {
                 "MaterialToolbar" to "toolbar_",
                 "CircularRevealFrameLayout" to "cr_",
                 "include" to "include_",
-                "MaterialCardView" to "cv_"
+                "MaterialCardView" to "cv_",
             )
 
         // Regex for camelCase (e.g., nextClick) or snake_case (e.g., next_click)
@@ -68,7 +68,10 @@ class SnakeCaseDetector : Detector(), Detector.XmlScanner {
         return listOf("id")
     }
 
-    override fun visitAttribute(context: XmlContext, attribute: Attr) {
+    override fun visitAttribute(
+        context: XmlContext,
+        attribute: Attr,
+    ) {
         val idValue = attribute.value
         if (!idValue.startsWith("@+id/")) return
 
@@ -83,7 +86,7 @@ class SnakeCaseDetector : Detector(), Detector.XmlScanner {
                 context,
                 attribute,
                 "Missing prefix",
-                "ID '$idName' for $viewType should start with '$expectedPrefix' (e.g., ${expectedPrefix}nextClick or ${expectedPrefix}next_click)"
+                "ID '$idName' for $viewType should start with '$expectedPrefix' (e.g., ${expectedPrefix}nextClick or ${expectedPrefix}next_click)",
             )
             return
         }
@@ -95,7 +98,7 @@ class SnakeCaseDetector : Detector(), Detector.XmlScanner {
                 context,
                 attribute,
                 "Empty name",
-                "ID needs a meaningful name after '$expectedPrefix' (e.g., ${expectedPrefix}nextClick or ${expectedPrefix}next_click)"
+                "ID needs a meaningful name after '$expectedPrefix' (e.g., ${expectedPrefix}nextClick or ${expectedPrefix}next_click)",
             )
             return
         }
@@ -105,7 +108,7 @@ class SnakeCaseDetector : Detector(), Detector.XmlScanner {
                 context,
                 attribute,
                 "Invalid format",
-                "ID '$idName' for $viewType should use camelCase (e.g., ${expectedPrefix}nextClick) or snake_case (e.g., ${expectedPrefix}next_click) after prefix"
+                "ID '$idName' for $viewType should use camelCase (e.g., ${expectedPrefix}nextClick) or snake_case (e.g., ${expectedPrefix}next_click) after prefix",
             )
         }
     }
@@ -118,11 +121,16 @@ class SnakeCaseDetector : Detector(), Detector.XmlScanner {
         }
     }
 
-    private fun reportIssue(context: XmlContext, attribute: Attr, summary: String, details: String) {
+    private fun reportIssue(
+        context: XmlContext,
+        attribute: Attr,
+        summary: String,
+        details: String,
+    ) {
         context.report(
             issue = ISSUE,
             location = context.getValueLocation(attribute),
-            message = "$summary for ${attribute.ownerElement.tagName}. $details"
+            message = "$summary for ${attribute.ownerElement.tagName}. $details",
         )
     }
 }

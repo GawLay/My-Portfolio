@@ -21,27 +21,28 @@ class ExpRepositoryImpl : ExpRepository {
     private val expDetailCollection =
         firestore.collection(FirebaseCollections.EXPERIENCE_DETAILS.name.lowercase())
 
-    override suspend fun getExpList(): Flow<State<Experiences?>> = flow {
-        emit(State.loading())
-        try {
-            val snap = expDocumentRef.get().await()
-            val lists = snap.toObject(Experiences::class.java)
-            emit(State.success(lists))
-        } catch (e: Exception) {
-            emit(
-                State.failed(
-                    e.message
-                        ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message
+    override suspend fun getExpList(): Flow<State<Experiences?>> =
+        flow {
+            emit(State.loading())
+            try {
+                val snap = expDocumentRef.get().await()
+                val lists = snap.toObject(Experiences::class.java)
+                emit(State.success(lists))
+            } catch (e: Exception) {
+                emit(
+                    State.failed(
+                        e.message
+                            ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
-        } catch (e: FirebaseException) {
-            emit(
-                State.failed(
-                    e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
+            } catch (e: FirebaseException) {
+                emit(
+                    State.failed(
+                        e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
+            }
         }
-    }
 
     override suspend fun getExpDetail(documentId: String): Flow<State<ExperienceDetailMap?>> =
         flow {
@@ -58,14 +59,14 @@ class ExpRepositoryImpl : ExpRepository {
                 emit(
                     State.failed(
                         e.message
-                            ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message
-                    )
+                            ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message,
+                    ),
                 )
             } catch (e: FirebaseException) {
                 emit(
                     State.failed(
-                        e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
-                    )
+                        e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message,
+                    ),
                 )
             }
         }

@@ -8,17 +8,18 @@ import java.util.UUID
 
 interface TemplateRepository {
     suspend fun getTemplateList(): Flow<State<TemplateInfo?>>
+
     suspend fun fetchPdfUrl(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
-        onFirebaseStoragePdfUrl: (String) -> Unit
+        onFirebaseStoragePdfUrl: (String) -> Unit,
     )
 
-     fun startDownloadPdf(
+    fun startDownloadPdf(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
         onWorkManagerInstance: (WorkManager, UUID) -> Unit,
-        intentDownloadUrl: String = ""
+        intentDownloadUrl: String = "",
     )
 
     suspend fun cancelDownloadWorkRequest()

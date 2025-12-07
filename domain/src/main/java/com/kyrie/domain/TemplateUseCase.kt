@@ -8,22 +8,22 @@ class TemplateUseCase(private val templateRepository: TemplateRepository) {
     suspend fun fetchPdfUrl(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
-        onPdfUrl: (String) -> Unit
+        onPdfUrl: (String) -> Unit,
     ) {
         templateRepository.fetchPdfUrl(fileNameToDownload, onFailureListener, onPdfUrl)
     }
 
-     fun startDownloadPdf(
+    fun startDownloadPdf(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
         onWorkManagerInstance: (WorkManager, UUID) -> Unit,
-        intentDownloadUrl: String = ""
+        intentDownloadUrl: String = "",
     ) {
         templateRepository.startDownloadPdf(
             fileNameToDownload,
             onFailureListener,
             onWorkManagerInstance,
-            intentDownloadUrl
+            intentDownloadUrl,
         )
     }
 

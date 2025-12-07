@@ -29,14 +29,15 @@ import java.io.IOException
 
 class TemplateWorkManagerImpl(
     private val context: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters), KoinComponent {
-
     override suspend fun doWork(): Result {
-        val url = inputData.getString(FirebasePDFStrings.PDF_URL_KEY.value)
-            ?: return Result.failure()
-        val fileNameWithExtension = inputData.getString(FirebasePDFStrings.PDF_FILE_NAME_KEY.value)
-            ?: return Result.failure()
+        val url =
+            inputData.getString(FirebasePDFStrings.PDF_URL_KEY.value)
+                ?: return Result.failure()
+        val fileNameWithExtension =
+            inputData.getString(FirebasePDFStrings.PDF_FILE_NAME_KEY.value)
+                ?: return Result.failure()
         createNotificationChannel(context = context)
 
         return try {
@@ -47,12 +48,11 @@ class TemplateWorkManagerImpl(
             e.printStackTrace()
             Result.failure()
         }
-
     }
 
     private suspend fun downloadPDFFileFromFirebase(
         url: String,
-        fileNameWithExtension: String
+        fileNameWithExtension: String,
     ): Uri? {
         showProgressNotification(context)
         val firebaseStorage = FirebaseStorage.getInstance()
@@ -67,24 +67,28 @@ class TemplateWorkManagerImpl(
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun savePdfUsingMediaStore(fileName: String, data: ByteArray): Uri? {
+    private fun savePdfUsingMediaStore(
+        fileName: String,
+        data: ByteArray,
+    ): Uri? {
         val resolver = applicationContext.contentResolver
 
         // Check if a file with the same name already exists
-        val existingUri = resolver.query(
-            MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.MediaColumns._ID),
-            "${MediaStore.MediaColumns.DISPLAY_NAME} = ?",
-            arrayOf(fileName),
-            null
-        )?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
-                ContentUris.withAppendedId(MediaStore.Downloads.EXTERNAL_CONTENT_URI, id)
-            } else {
-                null
+        val existingUri =
+            resolver.query(
+                MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                arrayOf(MediaStore.MediaColumns._ID),
+                "${MediaStore.MediaColumns.DISPLAY_NAME} = ?",
+                arrayOf(fileName),
+                null,
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                    ContentUris.withAppendedId(MediaStore.Downloads.EXTERNAL_CONTENT_URI, id)
+                } else {
+                    null
+                }
             }
-        }
 
         // If the file exists, delete it
         existingUri?.let {
@@ -92,11 +96,12 @@ class TemplateWorkManagerImpl(
         }
 
         // Create a new file and write the data
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-        }
+        val contentValues =
+            ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            }
 
         val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
         uri?.let { newUri ->
@@ -107,11 +112,12 @@ class TemplateWorkManagerImpl(
             }
         }
         return uri
-
-
     }
 
-    private fun savePdfToExternalStorage(fileName: String, data: ByteArray): Uri? {
+    private fun savePdfToExternalStorage(
+        fileName: String,
+        data: ByteArray,
+    ): Uri? {
         val downloadsDir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (!downloadsDir.exists()) {
@@ -130,9 +136,10 @@ class TemplateWorkManagerImpl(
             val name = NotificationChannelName.PDF_DOWNLOAD_CHANNEL.value
             val descriptionText = NotificationChannelName.PDF_DOWNLOAD_CHANNEL_DESC.value
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(NotificationChannelName.PDF_DOWNLOAD_CHANNEL_ID.value, name, importance).apply {
-                description = descriptionText
-            }
+            val channel =
+                NotificationChannel(NotificationChannelName.PDF_DOWNLOAD_CHANNEL_ID.value, name, importance).apply {
+                    description = descriptionText
+                }
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -140,43 +147,59 @@ class TemplateWorkManagerImpl(
     }
 
     @SuppressLint("MissingPermission")
-    fun showProgressNotification(context: Context, progress: Int = 0) {
-        val builder = NotificationCompat.Builder(context, NotificationChannelName.PDF_DOWNLOAD_CHANNEL_ID.value)
-            .setSmallIcon(android.R.drawable.stat_sys_download)
-            .setContentTitle("Downloading File")
-            .setContentText("Download in progress")
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setOnlyAlertOnce(true)
+    fun showProgressNotification(
+        context: Context,
+        progress: Int = 0,
+    ) {
+        val builder =
+            NotificationCompat.Builder(context, NotificationChannelName.PDF_DOWNLOAD_CHANNEL_ID.value)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setContentTitle("Downloading File")
+                .setContentText("Download in progress")
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setOnlyAlertOnce(true)
 //            .setProgress(100, progress, false)
 
         NotificationManagerCompat.from(context).notify(NotificationNotifyId.PDF_NOTIFICATION_NOTIFY_ID.id, builder.build())
     }
 
     @SuppressLint("MissingPermission")
-    fun showDownloadCompleteNotification(context: Context, uri: Uri?) {
+    fun showDownloadCompleteNotification(
+        context: Context,
+        uri: Uri?,
+    ) {
         // Create an Intent to open the PDF file with an action to view
         // Share the content URI with another app
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_VIEW
-            setDataAndType(uri,"application/pdf")
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant read permission to the receiving app
-        }
+        val shareIntent =
+            Intent().apply {
+                action = Intent.ACTION_VIEW
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant read permission to the receiving app
+            }
 
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(
-            context, 0, shareIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        val builder = NotificationCompat.Builder(context, NotificationChannelName.PDF_DOWNLOAD_CHANNEL_ID.value)
-            .setSmallIcon(android.R.drawable.stat_sys_download_done)
-            .setContentTitle("Download Complete")
-            .setContentText("My awesome resume file has landed on your phone.")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(
+                context,
+                0,
+                shareIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+        val builder =
+            NotificationCompat.Builder(context, NotificationChannelName.PDF_DOWNLOAD_CHANNEL_ID.value)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setContentTitle("Download Complete")
+                .setContentText("My awesome resume file has landed on your phone.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
 
         NotificationManagerCompat.from(context).notify(NotificationNotifyId.PDF_NOTIFICATION_NOTIFY_ID.id, builder.build())
     }
 
-    fun getPathFromUri(context: Context, uri: Uri): String? {
+    fun getPathFromUri(
+        context: Context,
+        uri: Uri,
+    ): String? {
         // For Android Q+, direct file paths are not accessible
         // Return URI string instead or use content:// URI directly
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -196,5 +219,4 @@ class TemplateWorkManagerImpl(
             filePath
         }
     }
-
 }

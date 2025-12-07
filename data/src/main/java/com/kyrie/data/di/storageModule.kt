@@ -5,6 +5,7 @@ import com.kyrie.data.storage.local.PrefSourceImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val storageModule = module {
-    single<IPrefSource> { PrefSourceImpl(androidContext()) }
-}
+val storageModule =
+    module {
+        single<IPrefSource> { PrefSourceImpl(androidContext()) }
+    }

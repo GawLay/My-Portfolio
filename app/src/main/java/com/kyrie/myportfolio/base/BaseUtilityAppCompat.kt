@@ -3,15 +3,16 @@ package com.kyrie.myportfolio.base
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +28,7 @@ import com.kyrie.utility.utility.ThemeUtil
 import com.kyrie.utility.utility.applyNavigationBarInsets
 import com.kyrie.utility.utility.applyStatusBarInsets
 import com.kyrie.utility.utility.hideShimmer
-import com.kyrie.utility.R as UtilityR
-import androidx.core.view.isNotEmpty
+import com.kyrie.utilit as UtilityR
 
 @DoNotImplementDirectly
 abstract class BaseUtilityAppCompat : AppCompatActivity() {

@@ -1,8 +1,7 @@
 package com.kyrie.data.models
 
-
 data class Experiences(
-    val data: ArrayList<ExperiencesData>? = arrayListOf()
+    val data: ArrayList<ExperiencesData>? = arrayListOf(),
 )
 
 data class ExperiencesData(
@@ -12,6 +11,5 @@ data class ExperiencesData(
     val location: String? = "",
     val position: String? = "",
     val timestamp: String? = "",
-    val priority: Int = 0
+    val priority: Int = 0,
 )
-
