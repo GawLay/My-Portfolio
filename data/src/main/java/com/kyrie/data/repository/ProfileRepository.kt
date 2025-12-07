@@ -5,6 +5,5 @@ import com.kyrie.data.remote.State
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
-
     suspend fun getProfile(): Flow<State<Profile?>>
 }

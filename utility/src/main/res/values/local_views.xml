@@ -3,7 +3,7 @@
 
     <style name="CircularRevealFrameStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:elevation">4dp</item>
         <item name="layout_behavior">@string/fabTransformationSheetBehaviour</item>
@@ -12,7 +12,7 @@
     <style name="BtmNavStyle" parent="MyPortfolioBottomNavStyle">
         <item name="android:background">@drawable/bg_reveal_frame</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="BtmNavTransparentActiveIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
@@ -222,8 +222,8 @@
     <style name="FaqContentStyle" parent="RegularTextStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
     </style>

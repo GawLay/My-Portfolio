@@ -122,12 +122,12 @@ pipeline {
                         error("AAB file not found at ${aabPath}")
                     }
                     if (!fileExists(notesPath)) {
-                        error("❌ Release notes not found at ${notesPath}")
+                        error("Release notes not found at ${notesPath}")
                     }
                     def releaseNotes = readFile(notesPath).trim()
                     if (releaseNotes.isEmpty()) {
                        releaseNotes = "Bug fixes and improvements (${env.BUILD_NUMBER})"
-                       echo "⚠️ Using fallback release notes"
+                       echo "Using fallback release notes"
                     }
                     androidApkUpload(
                         googleCredentialsId: 'PlayStore-via-Jenkins',
@@ -140,7 +140,7 @@ pipeline {
                         ]
                     )
 
-                    echo "✅Uploaded ${aabPath} to Google Play with release notes"
+                    echo "Uploaded ${aabPath} to Google Play with release notes"
                 }
             }
         }

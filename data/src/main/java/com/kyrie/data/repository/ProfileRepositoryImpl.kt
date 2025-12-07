@@ -18,28 +18,27 @@ class ProfileRepositoryImpl : ProfileRepository {
         Firebase.firestore.collection(FirebaseCollections.PROFILE.name.lowercase())
             .document(FirebaseCollections.DATA.name.lowercase())
 
-    override suspend fun getProfile(): Flow<State<Profile?>> = flow {
-
-        emit(State.loading())
-        try {
-            val snapshot = profileDataDocumentRef.get().await()
-            val profile = snapshot.toObject<Profile>()
-            emit(State.success(profile))
-        } catch (e: Exception) {
-            emit(
-                State.failed(
-                    e.message
-                        ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message
+    override suspend fun getProfile(): Flow<State<Profile?>> =
+        flow {
+            emit(State.loading())
+            try {
+                val snapshot = profileDataDocumentRef.get().await()
+                val profile = snapshot.toObject<Profile>()
+                emit(State.success(profile))
+            } catch (e: Exception) {
+                emit(
+                    State.failed(
+                        e.message
+                            ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
-        } catch (e: FirebaseException) {
-            showLog("data profile fException$e")
-            emit(
-                State.failed(
-                    e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
+            } catch (e: FirebaseException) {
+                showLog("data profile fException$e")
+                emit(
+                    State.failed(
+                        e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
+            }
         }
-
-    }
 }

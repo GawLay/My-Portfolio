@@ -13,11 +13,11 @@ enum class FirebaseCollections {
     TEMPLATES,
     PDF,
     FAQ,
-    FAQ_LIST
+    FAQ_LIST,
 }
 
 enum class FirebaseDefaultException(val message: String) {
     FIREBASE_DEFAULT_EXCEPTION("firebase something went wrong"),
     DEFAULT_EXCEPTION("something went wrong"),
-    EMPTY_DOCUMENT("empty document")
+    EMPTY_DOCUMENT("empty document"),
 }

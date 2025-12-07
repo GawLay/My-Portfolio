@@ -6,10 +6,10 @@ data class Profile(
     val description_two: String? = null,
     val gmail: String? = null,
     val image_url: String? = null,
-    val image_url_two:String?=null,
+    val image_url_two: String? = null,
     val job_title: String? = null,
     val github_url: String? = null,
     val linkedin_url: String? = null,
     val phone: String? = null,
-    val template_preview:String? = null,
+    val template_preview: String? = null,
 )

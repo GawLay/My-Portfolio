@@ -1,9 +1,8 @@
 package com.kyrie.data.models
 
-
 data class TemplateInfo(
-    val template_title:String? = "",
-    val data: ArrayList<TemplateData>? = arrayListOf()
+    val template_title: String? = "",
+    val data: ArrayList<TemplateData>? = arrayListOf(),
 )
 
 data class TemplateData(

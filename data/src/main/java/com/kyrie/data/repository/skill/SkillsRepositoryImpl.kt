@@ -12,36 +12,34 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
-
 class SkillsRepositoryImpl : SkillsRepository {
     private val skillDocumentRef =
         Firebase.firestore.collection(FirebaseCollections.SKILLS.name.lowercase())
             .document(FirebaseCollections.LIST.name.lowercase())
 
-    override suspend fun getSkillList(): Flow<State<Skills?>> = flow {
-        emit(State.loading())
-        try {
-            val snap = skillDocumentRef.get().await()
-            val lists = snap.toObject(Skills::class.java)
-            showLog("skills.  lists $lists")
-            emit(State.success(lists))
-        } catch (e: Exception) {
-            showLog("skills. Exception $e")
-            emit(
-                State.failed(
-                    e.message
-                        ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message
+    override suspend fun getSkillList(): Flow<State<Skills?>> =
+        flow {
+            emit(State.loading())
+            try {
+                val snap = skillDocumentRef.get().await()
+                val lists = snap.toObject(Skills::class.java)
+                showLog("skills.  lists $lists")
+                emit(State.success(lists))
+            } catch (e: Exception) {
+                showLog("skills. Exception $e")
+                emit(
+                    State.failed(
+                        e.message
+                            ?: FirebaseDefaultException.DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
-        } catch (e: FirebaseException) {
-            showLog("skills. fException$e")
-            emit(
-                State.failed(
-                    e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message
+            } catch (e: FirebaseException) {
+                showLog("skills. fException$e")
+                emit(
+                    State.failed(
+                        e.message ?: FirebaseDefaultException.FIREBASE_DEFAULT_EXCEPTION.message,
+                    ),
                 )
-            )
+            }
         }
-    }
-
 }
-

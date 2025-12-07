@@ -1,19 +1,65 @@
 package com.kyrie.myportfolio.base
 
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isNotEmpty
+import androidx.core.view.updateLayoutParams
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.circularreveal.CircularRevealFrameLayout
 import com.google.android.material.color.MaterialColors
 import com.kyrie.utility.animation.createValueAnimatorAnim
 import com.kyrie.utility.annotation.DoNotImplementDirectly
 import com.kyrie.utility.utility.ThemeUtil
+import com.kyrie.utility.utility.applyNavigationBarInsets
+import com.kyrie.utility.utility.applyStatusBarInsets
 import com.kyrie.utility.utility.hideShimmer
-import com.kyrie.utility.R as UtilityR
+import com.kyrie.utilit as UtilityR
 
 @DoNotImplementDirectly
 abstract class BaseUtilityAppCompat : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, window.decorView).systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        super.onCreate(savedInstanceState)
+    }
+
+    protected fun applyEdgeToEdgeInsets(root: View) {
+        when (root) {
+            is MaterialToolbar -> root.applyStatusBarInsets()
+            is BottomNavigationView -> root.applyNavigationBarInsets()
+            is CircularRevealFrameLayout -> root.applyNavigationBarInsets()
+            is RecyclerView -> root.applyNavigationBarInsets()
+            is ViewPager2 -> root.applyNavigationBarInsets()
+            is NestedScrollView -> {
+                root.applyNavigationBarInsets()
+                val firstChild = if (root.isNotEmpty()) root.getChildAt(0) else null
+                firstChild?.applyStatusBarInsets()
+            }
+            is ScrollView -> root.applyNavigationBarInsets()
+        }
+        if (root is ViewGroup) {
+            for (i in 0 until root.childCount) {
+                applyEdgeToEdgeInsets(root.getChildAt(i))
+            }
+        }
+    }
+
     protected val shimmerAnimDuration by lazy {
         resources.getInteger(UtilityR.integer.shimmer_duration).toLong()
     }
@@ -102,6 +148,26 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
         createValueAnimatorAnim(secondaryStatusColor, greyStatusColor, duration) {
             // changing previous activity's status bar color to look more elegant
             window.statusBarColor = animatedValue as Int
+        }
+    }
+
+    protected fun View.applyTopInsetAsHeight(additionalHeight: Int) {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updateLayoutParams {
+                height = additionalHeight + systemBars.top
+            }
+            insets
+        }
+    }
+
+    protected fun View.applyTopInsetAsMargin(additionalMargin: Int) {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = additionalMargin + systemBars.top
+            }
+            insets
         }
     }
 
