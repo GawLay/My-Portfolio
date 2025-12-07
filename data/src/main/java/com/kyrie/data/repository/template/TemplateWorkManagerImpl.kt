@@ -15,7 +15,6 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.FileProvider
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.firebase.storage.FirebaseStorage
@@ -178,15 +177,24 @@ class TemplateWorkManagerImpl(
     }
 
     fun getPathFromUri(context: Context, uri: Uri): String? {
-        var filePath: String? = null
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-        cursor?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val columnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
-                filePath = cursor.getString(columnIndex)
+        // For Android Q+, direct file paths are not accessible
+        // Return URI string instead or use content:// URI directly
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // For modern Android, work with URI directly instead of file paths
+            uri.toString()
+        } else {
+            var filePath: String? = null
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val columnIndex = it.getColumnIndex(MediaStore.MediaColumns.DATA)
+                    if (columnIndex != -1) {
+                        filePath = it.getString(columnIndex)
+                    }
+                }
             }
+            filePath
         }
-        return filePath
     }
 
 }

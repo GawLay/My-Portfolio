@@ -4,20 +4,20 @@ plugins {
 }
 
 android {
-    namespace 'com.kyrie.utility'
-    compileSdk 35
+    namespace = 'com.kyrie.utility'
+    compileSdk = 36
 
     defaultConfig {
-        minSdk 23
-        targetSdk 35
+        minSdk = 23
+        targetSdk = 36
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

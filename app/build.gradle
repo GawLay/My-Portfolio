@@ -8,37 +8,34 @@ plugins {
 android {
     lint {
         disable.add("CoroutineCreationDuringComposition")
+        textOutput = file("lint-report.txt")
+        textReport = true
+        warningsAsErrors = false
+        abortOnError = true
+        lintConfig = file("${project.rootDir}/lint-check/lint.xml") // Optional, see below
     }
-    lintOptions {
-        textOutput "stdout"
-        textReport true
-        textOutput file("lint-report.txt")
-        warningsAsErrors false
-        abortOnError true
-        lintConfig file("${project.rootDir}/lint-check/lint.xml") // Optional, see below
-    }
-    namespace 'com.kyrie.myportfolio'
-    compileSdk 35
+    namespace = 'com.kyrie.myportfolio'
+    compileSdk = 36
 
     defaultConfig {
-        applicationId "com.kyrie.myportfolio"
-        minSdk 23
-        targetSdk 35
-        versionCode 27
-        versionName "27"
+        applicationId = "com.kyrie.myportfolio"
+        minSdk = 23
+        targetSdk = 36
+        versionCode = 27
+        versionName = "27"
         multiDexEnabled = true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            minifyEnabled false
-            debuggable true
+            minifyEnabled = false
+            debuggable = true
         }
         release {
-            minifyEnabled true
-            shrinkResources true
-            debuggable false
+            minifyEnabled = true
+            shrinkResources = true
+            debuggable = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             proguardFiles project(':data').file('proguard-rules.pro')
         }
@@ -51,25 +48,24 @@ android {
         jvmTarget = '17'
     }
     buildFeatures {
-        viewBinding true
-        buildConfig true
+        viewBinding = true
+        buildConfig = true
     }
-    packagingOptions {
+    packaging {
         resources {
-            excludes += [
-                'META-INF/DEPENDENCIES',
-                'META-INF/LICENSE',
-                'META-INF/LICENSE.txt',
-                'META-INF/license.txt',
-                'META-INF/NOTICE',
-                'META-INF/NOTICE.txt',
-                'META-INF/notice.txt',
-                'META-INF/ASL2.0',
-                'META-INF/*.md',
-                'META-INF/*.kotlin_module',
-                'META-INF/AL2.0',
-                'META-INF/LGPL2.1'
-            ]
+            // Modern syntax for excluding resources in AGP 8.x with Groovy DSL
+            it.excludes += 'META-INF/DEPENDENCIES'
+            it.excludes += 'META-INF/LICENSE'
+            it.excludes += 'META-INF/LICENSE.txt'
+            it.excludes += 'META-INF/license.txt'
+            it.excludes += 'META-INF/NOTICE'
+            it.excludes += 'META-INF/NOTICE.txt'
+            it.excludes += 'META-INF/notice.txt'
+            it.excludes += 'META-INF/ASL2.0'
+            it.excludes += 'META-INF/*.md'
+            it.excludes += 'META-INF/*.kotlin_module'
+            it.excludes += 'META-INF/AL2.0'
+            it.excludes += 'META-INF/LGPL2.1'
         }
     }
     buildToolsVersion '35.0.1'
