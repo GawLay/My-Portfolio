@@ -10,10 +10,12 @@ pipeline {
         githubPush()
     }
 
+    tools {
+        jdk 'JDK17'
+    }
+
     environment {
         GRADLE_USER_HOME = "${WORKSPACE}/.gradle"
-        _JAVA_OPTIONS = "-Duser.home=${WORKSPACE}"
-        PATH = "${JAVA_HOME}/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${env.PATH}"
         GRADLE_OPTS = "-Dorg.gradle.cache.size=500000000"
     }
 
@@ -24,15 +26,11 @@ pipeline {
                 script {
                     echo "Building branch: ${env.BRANCH_NAME}"
                     sh '''
-                        whoami
-                        ls -la ${WORKSPACE}
+                        echo "=== Environment Check ==="
                         java -version
-                        echo $JAVA_HOME
-                        echo $PATH
-                        sdkmanager --version
-                        docker --version || echo "Docker CLI not available"
-                        ls -la /var/run/docker.sock || echo "Docker socket not accessible"
-                        groups
+                        echo "ANDROID_HOME: $ANDROID_HOME"
+                        ./gradlew --version
+                        echo "=== Ready to build ==="
                     '''
                 }
             }

@@ -28,7 +28,7 @@ import com.kyrie.utility.utility.ThemeUtil
 import com.kyrie.utility.utility.applyNavigationBarInsets
 import com.kyrie.utility.utility.applyStatusBarInsets
 import com.kyrie.utility.utility.hideShimmer
-import com.kyrie.utilit as UtilityR
+import com.kyrie.utility.R as UtilityR
 
 @DoNotImplementDirectly
 abstract class BaseUtilityAppCompat : AppCompatActivity() {
