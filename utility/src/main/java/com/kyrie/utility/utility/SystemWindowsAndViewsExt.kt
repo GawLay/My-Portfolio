@@ -3,6 +3,9 @@ package com.kyrie.utility.utility
 import android.app.Activity
 import android.os.Build
 import android.view.*
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 
 fun Activity.awaitViewDraw(onPreDraw:()->Unit){
     val decor = window.decorView
@@ -58,3 +61,42 @@ fun Activity.changeStatusBarColor(color:Int){
                 )
     }
 }
+
+fun View.applyStatusBarInsets() {
+    val initialPadding = recordInitialPadding()
+    ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        val statusBars = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+        view.updatePadding(
+            left = initialPadding.left,
+            top = initialPadding.top + statusBars.top,
+            right = initialPadding.right,
+            bottom = initialPadding.bottom,
+        )
+        windowInsets
+    }
+    ViewCompat.requestApplyInsets(this)
+}
+
+fun View.applyNavigationBarInsets() {
+    val initialPadding = recordInitialPadding()
+    ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        val navigationBars = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        view.updatePadding(
+            left = initialPadding.left,
+            top = initialPadding.top,
+            right = initialPadding.right,
+            bottom = initialPadding.bottom + navigationBars.bottom,
+        )
+        windowInsets
+    }
+    ViewCompat.requestApplyInsets(this)
+}
+
+private data class InitialPadding(
+    val left: Int,
+    val top: Int,
+    val right: Int,
+    val bottom: Int,
+)
+
+private fun View.recordInitialPadding() = InitialPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)

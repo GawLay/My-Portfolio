@@ -24,6 +24,7 @@ abstract class BaseActivity<T : ViewBinding> : BaseUtilityAppCompat() {
         super.onCreate(savedInstanceState)
         binding = this.setBinding(layoutInflater)
         setContentView(binding.root)
+        applyEdgeToEdgeInsets(binding.root)
         onCreated(savedInstanceState)
         onClickEvents()
         onBackPressedDispatcher.addCallback(this, backPressedCallback)

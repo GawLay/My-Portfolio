@@ -21,6 +21,7 @@ abstract class BaseRevealActivity<T : ViewBinding> : BaseUtilityAppCompat() {
         super.onCreate(savedInstanceState)
         binding = this.setBinding(layoutInflater)
         setContentView(binding.root)
+        applyEdgeToEdgeInsets(binding.root)
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
         onCreated(savedInstanceState)
         setupRevealAnim()

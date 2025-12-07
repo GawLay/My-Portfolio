@@ -2,6 +2,7 @@ package com.kyrie.myportfolio.experience.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -40,7 +41,7 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
     }
 
     override fun onCreated(savedInstanceState: Bundle?) {
-        changeStatusColorFromDefaultToSecondary(500L)
+        setupStatusBar()
         postponeEnterTransition()
         awaitViewDraw {
             startPostponedEnterTransition()
@@ -53,6 +54,18 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
         setVp()
         getDetails()
     }
+
+    private fun setupStatusBar() {
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            // Set to true for dark icons on light background (colorSecondary)
+            // Set to false for light icons on dark background
+            isAppearanceLightStatusBars = true
+        }
+    }
+
+    private val Int.dp: Int
+        get() = (this * resources.displayMetrics.density).toInt()
 
     private fun setVp() {
         val vpAdapter = ExpDetailVPAdapter(supportFragmentManager, lifecycle)
@@ -157,7 +170,6 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
 
     override fun handleBackPress() {
         hideVP()
-        changeStatusColorFromSecondaryToDefault(500L)
         setResult(RESULT_OK)
         finishAfterTransition()
     }
