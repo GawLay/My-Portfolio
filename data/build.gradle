@@ -37,8 +37,8 @@ dependencies {
     implementation project(':utility')
     implementation platform(libs.firebaseBom)
     implementation libs.firestore
-    implementation libs.firebaseStorage
     implementation libs.core.ktx
+    implementation libs.coroutines
     implementation libs.bundles.koins
     implementation libs.workManager
     implementation libs.converter.gson

@@ -18,7 +18,7 @@ import java.util.UUID
 
 class TemplateViewerActivity : BaseActivity<ActivityTemplatePdfViewerBinding>() {
     private val templateUseCase: TemplateUseCase by inject()
-    private val firebaseUrl: String by lazy {
+    private val pdfUrl: String by lazy {
         intent.getStringExtra(TemplateIntentKey.PDF_PREVIEW_URL.key) ?: ""
     }
     private val fileName: String by lazy {
@@ -31,12 +31,12 @@ class TemplateViewerActivity : BaseActivity<ActivityTemplatePdfViewerBinding>() 
                 fileName,
                 ::onFailedDownloadUrl,
                 ::observeWorkManager,
-                intentDownloadUrl = firebaseUrl,
+                intentDownloadUrl = pdfUrl,
             )
         }
         binding.pdfRendererViewTemplate
             .initWithUrl(
-                firebaseUrl,
+                pdfUrl,
                 lifecycleCoroutineScope = lifecycleScope,
                 lifecycle = lifecycle,
             )

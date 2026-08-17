@@ -65,7 +65,6 @@ mockk = "1.13.8"
 turbine = "1.0.0"
 core-testing = "2.2.0"
 
-fireStorageUI = "7.2.0"
 jetbrainsKotlinJvm = "2.1.0"
 [libraries]
 
@@ -103,8 +102,6 @@ workManager = { module = "androidx.work:work-runtime-ktx", version.ref = "workMa
 markDown = { module = "io.noties.markwon:core", version.ref = "markDown" }
 #kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:_"
 firestore = { module = "com.google.firebase:firebase-firestore" }
-firestorageUI = { module = "com.firebaseui:firebase-ui-storage", version.ref = "fireStorageUI" }
-firebaseStorage = { module = "com.google.firebase:firebase-storage" }
 firebaseBom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 afreakyelfPdfViewr = { module = "io.github.afreakyelf:Pdf-Viewer", version.ref = "afreakyelfPdfViewer" }
 
@@ -130,5 +127,4 @@ koins = ["core-injection", "injection", "java-injection"]
 lintCheck = ["lintApi", "lintCheck"]
 lintTest=["lintTools","lintTest"]
 okhttp = ["okhttps", "logginghttps"]
-firebase = ["firestore", "firestorageUI"]
 androidTest = ["junit", "androidx-test-ext-junit", "espresso-core", "coroutines-test", "mockk", "turbine", "core-testing"]

@@ -53,10 +53,26 @@ enum class MyAddressAssociate(val associate: String) {
     GMAIL_WEB_COMPOSE_BOX("https://mail.google.com/mail/u/0/#compose")
 }
 
-enum class FirebasePDFStrings(val value: String) {
+enum class PdfDownloadStrings(val value: String) {
     PDF_URL_KEY("url"),
     PDF_FILE_NAME_KEY("filename"),
     PDF_FILE_URI_KEY("fileURI")
+}
+
+enum class SupabaseFolder(val path: String) {
+    RESUMES("resumes")
+}
+
+/**
+ * Public read-only assets live in the [BUCKET] bucket, so every object is reachable
+ * through a deterministic URL and no API key or SDK is required to download one.
+ */
+object SupabaseStorage {
+    const val HOST = "nkwzkpzrwsvbipysvwxe.supabase.co"
+    private const val BUCKET = "portfolio-assets"
+
+    fun publicUrl(folder: SupabaseFolder, fileName: String) =
+        "https://$HOST/storage/v1/object/public/$BUCKET/${folder.path}/$fileName"
 }
 
 enum class NotificationChannelName(val value: String) {

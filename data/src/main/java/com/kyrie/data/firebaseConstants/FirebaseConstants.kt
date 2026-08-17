@@ -11,7 +11,6 @@ enum class FirebaseCollections {
     DATA,
     LIST,
     TEMPLATES,
-    PDF,
     FAQ,
     FAQ_LIST,
 }

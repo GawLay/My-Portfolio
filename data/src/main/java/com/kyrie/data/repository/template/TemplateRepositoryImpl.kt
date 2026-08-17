@@ -8,18 +8,25 @@ import androidx.work.WorkManager
 import com.google.firebase.FirebaseException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.kyrie.data.firebaseConstants.FirebaseCollections
 import com.kyrie.data.firebaseConstants.FirebaseDefaultException
 import com.kyrie.data.models.TemplateInfo
 import com.kyrie.data.remote.State
-import com.kyrie.utility.constants.FirebasePDFStrings
+import com.kyrie.data.remote.SupabaseStorageClient
+import com.kyrie.utility.constants.PdfDownloadStrings
+import com.kyrie.utility.constants.SupabaseFolder
+import com.kyrie.utility.constants.SupabaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.util.UUID
 
-class TemplateRepositoryImpl(private val context: Context) : TemplateRepository {
+class TemplateRepositoryImpl(
+    private val context: Context,
+    private val supabaseStorageClient: SupabaseStorageClient,
+) : TemplateRepository {
     private var downloadWorkRequest: OneTimeWorkRequest? = null
     private val templateListRef =
         Firebase.firestore.collection(FirebaseCollections.TEMPLATES.name.lowercase())
@@ -52,25 +59,21 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
     override suspend fun fetchPdfUrl(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
-        onFirebaseStoragePdfUrl: (String) -> Unit,
+        onPdfUrl: (String) -> Unit,
     ) {
-        val storage = Firebase.storage
-        val storageRef = storage.reference.child(FirebaseCollections.PDF.name.lowercase())
-        storageRef.listAll().addOnSuccessListener { listResult ->
-            for (fileRef in listResult.items) {
-                // Get the file name
-                if (fileNameToDownload == fileRef.name) {
-                    fileRef.downloadUrl.addOnSuccessListener {
-                        val downloadUrl = it.toString()
-                        onFirebaseStoragePdfUrl.invoke(downloadUrl ?: "")
-                    }.addOnFailureListener {
-                        onFailureListener.invoke(it)
-                    }
-                    break
-                }
+        if (fileNameToDownload.isEmpty()) {
+            onFailureListener.invoke(FileNotFoundException(EMPTY_FILE_NAME))
+            return
+        }
+        val pdfUrl = SupabaseStorage.publicUrl(SupabaseFolder.RESUMES, fileNameToDownload)
+        try {
+            if (supabaseStorageClient.exists(pdfUrl)) {
+                onPdfUrl.invoke(pdfUrl)
+            } else {
+                onFailureListener.invoke(FileNotFoundException(fileNameToDownload))
             }
-        }.addOnFailureListener {
-            onFailureListener.invoke(it)
+        } catch (e: IOException) {
+            onFailureListener.invoke(e)
         }
     }
 
@@ -80,36 +83,23 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
         onWorkManagerInstance: (WorkManager, UUID) -> Unit,
         intentDownloadUrl: String,
     ) {
-        if (intentDownloadUrl.isNotEmpty()) {
-            queueWorkManagerAndDownload(
-                intentDownloadUrl,
-                fileNameToDownload,
-                onWorkManagerInstance,
-            )
-        } else {
-            val storage = Firebase.storage
-            val storageRef = storage.reference.child(FirebaseCollections.PDF.name.lowercase())
-            storageRef.listAll().addOnSuccessListener { listResult ->
-                for (fileRef in listResult.items) {
-                    // Get the file name
-                    if (fileNameToDownload == fileRef.name) {
-                        fileRef.downloadUrl.addOnSuccessListener {
-                            val downloadUrl = it.toString()
-                            queueWorkManagerAndDownload(
-                                downloadUrl,
-                                fileNameToDownload,
-                                onWorkManagerInstance,
-                            )
-                        }.addOnFailureListener {
-                            onFailureListener.invoke(it)
-                        }
-                        break
-                    }
-                }
-            }.addOnFailureListener {
-                onFailureListener.invoke(it)
-            }
+        // The file name is what the PDF is saved as, so it is required even when the
+        // caller already has the URL.
+        if (fileNameToDownload.isEmpty()) {
+            onFailureListener.invoke(FileNotFoundException(EMPTY_FILE_NAME))
+            return
         }
+        // The bucket is public, so the download URL is derivable from the file name and
+        // needs no round trip before the worker is queued.
+        val downloadUrl =
+            intentDownloadUrl.ifEmpty {
+                SupabaseStorage.publicUrl(SupabaseFolder.RESUMES, fileNameToDownload)
+            }
+        queueWorkManagerAndDownload(
+            downloadUrl,
+            fileNameToDownload,
+            onWorkManagerInstance,
+        )
     }
 
     private fun queueWorkManagerAndDownload(
@@ -119,8 +109,8 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
     ) {
         val data =
             Data.Builder()
-                .putString(FirebasePDFStrings.PDF_URL_KEY.value, url)
-                .putString(FirebasePDFStrings.PDF_FILE_NAME_KEY.value, fileName)
+                .putString(PdfDownloadStrings.PDF_URL_KEY.value, url)
+                .putString(PdfDownloadStrings.PDF_FILE_NAME_KEY.value, fileName)
                 .build()
 
         downloadWorkRequest =
@@ -136,5 +126,9 @@ class TemplateRepositoryImpl(private val context: Context) : TemplateRepository 
         if (downloadWorkRequest != null) {
             workManager.cancelWorkById(downloadWorkRequest!!.id)
         }
+    }
+
+    private companion object {
+        const val EMPTY_FILE_NAME = "No file name was given for the PDF"
     }
 }

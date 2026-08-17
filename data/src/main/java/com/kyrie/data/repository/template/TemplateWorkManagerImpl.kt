@@ -17,31 +17,34 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.google.firebase.storage.FirebaseStorage
-import com.kyrie.utility.constants.FirebasePDFStrings
+import com.kyrie.data.remote.SupabaseStorageClient
 import com.kyrie.utility.constants.NotificationChannelName
 import com.kyrie.utility.constants.NotificationNotifyId
-import kotlinx.coroutines.tasks.await
+import com.kyrie.utility.constants.PdfDownloadStrings
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 
 class TemplateWorkManagerImpl(
     private val context: Context,
     workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters), KoinComponent {
+    private val supabaseStorageClient: SupabaseStorageClient by inject()
+
     override suspend fun doWork(): Result {
         val url =
-            inputData.getString(FirebasePDFStrings.PDF_URL_KEY.value)
+            inputData.getString(PdfDownloadStrings.PDF_URL_KEY.value)
                 ?: return Result.failure()
         val fileNameWithExtension =
-            inputData.getString(FirebasePDFStrings.PDF_FILE_NAME_KEY.value)
+            inputData.getString(PdfDownloadStrings.PDF_FILE_NAME_KEY.value)
                 ?: return Result.failure()
         createNotificationChannel(context = context)
 
         return try {
-            val uri = downloadPDFFileFromFirebase(url, fileNameWithExtension)
+            val uri = downloadPdfFile(url, fileNameWithExtension)
             showDownloadCompleteNotification(context, uri)
             Result.success()
         } catch (e: IOException) {
@@ -50,26 +53,24 @@ class TemplateWorkManagerImpl(
         }
     }
 
-    private suspend fun downloadPDFFileFromFirebase(
+    private suspend fun downloadPdfFile(
         url: String,
         fileNameWithExtension: String,
     ): Uri? {
         showProgressNotification(context)
-        val firebaseStorage = FirebaseStorage.getInstance()
-        val storageReference = firebaseStorage.getReferenceFromUrl(url)
-        val bytes = storageReference.getBytes(Long.MAX_VALUE).await()
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            savePdfUsingMediaStore(fileNameWithExtension, bytes)
-        } else {
-            savePdfToExternalStorage(fileNameWithExtension, bytes)
+        return supabaseStorageClient.download(url) { source ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                savePdfUsingMediaStore(fileNameWithExtension, source)
+            } else {
+                savePdfToExternalStorage(fileNameWithExtension, source)
+            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun savePdfUsingMediaStore(
         fileName: String,
-        data: ByteArray,
+        source: InputStream,
     ): Uri? {
         val resolver = applicationContext.contentResolver
 
@@ -107,7 +108,7 @@ class TemplateWorkManagerImpl(
         uri?.let { newUri ->
             resolver.openFileDescriptor(newUri, "w")?.use { descriptor ->
                 FileOutputStream(descriptor.fileDescriptor).use { outputStream ->
-                    outputStream.write(data)
+                    source.copyTo(outputStream)
                 }
             }
         }
@@ -116,7 +117,7 @@ class TemplateWorkManagerImpl(
 
     private fun savePdfToExternalStorage(
         fileName: String,
-        data: ByteArray,
+        source: InputStream,
     ): Uri? {
         val downloadsDir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -127,7 +128,9 @@ class TemplateWorkManagerImpl(
         if (pdfFile.exists()) {
             pdfFile.delete() // Delete the existing file
         }
-        pdfFile.writeBytes(data)
+        pdfFile.outputStream().use { outputStream ->
+            source.copyTo(outputStream)
+        }
         return Uri.fromFile(pdfFile)
     }
 

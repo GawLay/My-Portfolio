@@ -12,7 +12,7 @@ interface TemplateRepository {
     suspend fun fetchPdfUrl(
         fileNameToDownload: String,
         onFailureListener: (Exception) -> Unit,
-        onFirebaseStoragePdfUrl: (String) -> Unit,
+        onPdfUrl: (String) -> Unit,
     )
 
     fun startDownloadPdf(

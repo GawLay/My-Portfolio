@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 val templateModule =
     module {
-        single<TemplateRepository> { TemplateRepositoryImpl(get()) }
+        single<TemplateRepository> { TemplateRepositoryImpl(get(), get()) }
     }

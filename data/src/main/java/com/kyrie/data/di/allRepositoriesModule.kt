@@ -11,5 +11,6 @@ val repositoriesModule =
             templateModule,
             faqRepoModule,
             storageModule,
+            networkModule,
         )
     }
