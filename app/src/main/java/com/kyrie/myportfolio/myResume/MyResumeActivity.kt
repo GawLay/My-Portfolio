@@ -34,7 +34,7 @@ import com.kyrie.utility.constants.WebViewIntentKey
 import com.kyrie.utility.simplifyInteractors.AnimatorListenerAdapter
 import com.kyrie.utility.utility.ItemOffsetDecoration
 import com.kyrie.utility.utility.awaitViewDraw
-import com.kyrie.utility.utility.getBitmap
+import com.kyrie.utility.utility.loadUrlWithResourceReady
 import com.kyrie.utility.utility.makeSharedSceneTransitionWithDataResult
 import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.setMarkdown
@@ -67,19 +67,31 @@ class MyResumeActivity : BaseActivity<ActivityResumeBinding>() {
     private var urlType = ""
 
     override fun onCreated(savedInstanceState: Bundle?) {
-        val byteArray = intent.getByteArrayExtra(BundleKeys.ABOUT_ME_BITMAP_KEY.key)
-        if (byteArray != null) {
-            binding.includeResumeHeader.ivProfile.setImageBitmap(byteArray.getBitmap())
-        }
         postponeEnterTransition()
         setSharedElementNames()
         setWindowTransitions()
         setSharedTransitions()
-        awaitViewDraw()
+        loadProfileImage()
         showViews()
         setRc()
         getProfile()
         getExpList()
+    }
+
+    /**
+     * The previous screen only hands over the image URL, so the bitmap is pulled straight
+     * out of Glide's cache here. The enter transition stays postponed until the image is in
+     * place, otherwise the shared element would animate an empty [android.widget.ImageView].
+     */
+    private fun loadProfileImage() {
+        val profileImageUrl = intent.getStringExtra(BundleKeys.ABOUT_ME_PROFILE_URL_KEY.key).orEmpty()
+        if (profileImageUrl.isEmpty()) {
+            awaitViewDraw()
+            return
+        }
+        binding.includeResumeHeader.ivProfile.loadUrlWithResourceReady(profileImageUrl) {
+            awaitViewDraw()
+        }
     }
 
     private fun getProfile() {

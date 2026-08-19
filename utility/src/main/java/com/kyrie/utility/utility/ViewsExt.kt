@@ -22,6 +22,11 @@ fun ImageView.loadUrl(url: String) {
         .into(this)
 }
 
+/**
+ * Reads [url] straight from Glide's cache and reports back as soon as it is on screen, so a
+ * caller can hold a postponed shared element transition until the image is in place.
+ * On a cache miss it falls back to a normal load rather than leaving the view empty.
+ */
 fun ImageView.loadUrlWithResourceReady(url: String, onResourceReady: () -> Unit) {
     val requestOptions = RequestOptions()
         .dontTransform()
@@ -38,6 +43,8 @@ fun ImageView.loadUrlWithResourceReady(url: String, onResourceReady: () -> Unit)
                 isFirstResource: Boolean
             ): Boolean {
                 onResourceReady.invoke()
+                // Never start a second request from inside Glide's own callback.
+                post { loadUrl(url) }
                 return false
             }
 

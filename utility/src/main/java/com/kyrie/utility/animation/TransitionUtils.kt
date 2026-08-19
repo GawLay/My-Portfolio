@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
+import com.kyrie.utility.R
 
 object TransitionUtils {
     fun createResumeSharedEnterTransition(): TransitionSet {
@@ -39,6 +40,7 @@ object TransitionUtils {
         return transitionTogether {
             excludeTarget(android.R.id.navigationBarBackground, true)
             excludeTarget(android.R.id.statusBarBackground, true)
+            excludeTarget(R.id.status_bar_scrim, true)
             this += imageSet
             this += textSet
         }
@@ -74,6 +76,7 @@ object TransitionUtils {
             this += slideTop
             this += clipBounds
             excludeTarget(android.R.id.statusBarBackground, true)
+            excludeTarget(R.id.status_bar_scrim, true)
             excludeTarget(android.R.id.navigationBarBackground, true)
         }
     }
@@ -109,6 +112,7 @@ object TransitionUtils {
         return transitionTogether {
             excludeTarget(android.R.id.navigationBarBackground, true)
             excludeTarget(android.R.id.statusBarBackground, true)
+            excludeTarget(R.id.status_bar_scrim, true)
 //            this += recolor
             this += imageSet
             this += textSet
@@ -126,6 +130,7 @@ object TransitionUtils {
         val changeBounds = ChangeBounds()
         val fade = Fade()
         fade.excludeTarget(android.R.id.statusBarBackground, true)
+        fade.excludeTarget(R.id.status_bar_scrim, true)
         fade.excludeTarget(android.R.id.navigationBarBackground, true)
 
         val slide = Slide(Gravity.BOTTOM).apply {

@@ -10,6 +10,7 @@ val repositoriesModule =
             expRepoModule,
             templateModule,
             faqRepoModule,
+            attributeRepoModule,
             storageModule,
             networkModule,
         )

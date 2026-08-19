@@ -31,13 +31,6 @@ fun Activity.awaitViewDraw(onPreDraw:()->Unit){
 //    }
 //}
 
-fun Activity.changeStatusBarColor(color:Int){
-    val window: Window = window
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    window.statusBarColor = color
-
-}
-
  fun Activity.hideStatusBar() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         window.insetsController?.hide(WindowInsets.Type.statusBars())

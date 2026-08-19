@@ -28,8 +28,6 @@ import com.kyrie.utility.constants.FancyToastTypes
 import com.kyrie.utility.constants.SharedElementsNames
 import com.kyrie.utility.math.GetXY
 import com.kyrie.utility.utility.callPhone
-import com.kyrie.utility.utility.changeStatusBarColor
-import com.kyrie.utility.utility.getByteArrayFromImageView
 import com.kyrie.utility.utility.loadUrl
 import com.kyrie.utility.utility.makeSharedSceneTransitionWithData
 import com.kyrie.utility.utility.overridePendingTransitionExt
@@ -48,6 +46,7 @@ import android.util.Pair as UtilPair
 class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
     private val viewModel: AboutMeViewModel by viewModel()
     private var myPhoneNumber = ""
+    private var profileImageUrl = ""
 
     private val requestCode = 1000
 
@@ -96,7 +95,8 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
     }
 
     private fun setProfileInfo(data: Profile) {
-        binding.ivProfile.loadUrl(data.image_url ?: "")
+        profileImageUrl = data.image_url ?: ""
+        binding.ivProfile.loadUrl(profileImageUrl)
         binding.tvName.apply {
             text = data.name
             visibility = View.VISIBLE
@@ -190,8 +190,8 @@ class AboutMeActivity : BaseRevealActivity<ActivityAboutMeBinding>() {
                             UtilPair.create(binding.clHeader, binding.clHeader.transitionName),
                         ) {
                             putExtra(
-                                BundleKeys.ABOUT_ME_BITMAP_KEY.key,
-                                binding.ivProfile.getByteArrayFromImageView(),
+                                BundleKeys.ABOUT_ME_PROFILE_URL_KEY.key,
+                                profileImageUrl,
                             )
                         }
                     }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Identifies the view that paints the status bar area. Window transitions exclude it the
+      same way they exclude android:id/statusBarBackground.
+    -->
+    <item name="status_bar_scrim" type="id" />
+</resources>

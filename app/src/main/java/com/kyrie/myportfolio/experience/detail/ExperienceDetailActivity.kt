@@ -19,6 +19,7 @@ import com.kyrie.utility.constants.ExpIntentKeys
 import com.kyrie.utility.constants.SharedElementsNames
 import com.kyrie.utility.simplifyInteractors.AnimatorListenerAdapter
 import com.kyrie.utility.utility.awaitViewDraw
+import com.kyrie.utility.utility.hideShimmer
 import com.kyrie.utility.utility.showFancyToast
 import com.kyrie.utility.utility.showLog
 import kotlinx.coroutines.flow.collectLatest
@@ -51,12 +52,27 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
         setWindowTransition()
         setSharedTransitions()
 //        setRc()
+        setupShimmer()
         setVp()
         getDetails()
     }
 
+    private fun setupShimmer() {
+        // Both shimmer layouts ship at alpha 0; reveal them so the loading placeholder
+        // (job card + detail content) is visible while the experience detail is fetched.
+        binding.includeShimmerExp.root.alpha = 1f
+        binding.includeShimmerContent.root.alpha = 1f
+    }
+
+    private fun hideShimmers() {
+        binding.includeShimmerExp.root.hideShimmer(shimmerAnimDuration) {}
+        binding.includeShimmerContent.root.hideShimmer(shimmerAnimDuration) {}
+    }
+
     private fun setupStatusBar() {
-        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        // The window already draws edge to edge, so the status bar area only needs the scrim
+        // cleared; setting window.statusBarColor is a no-op from SDK 35 on.
+        changeStatusBarColor(android.graphics.Color.TRANSPARENT)
         WindowInsetsControllerCompat(window, window.decorView).apply {
             // Set to true for dark icons on light background (colorSecondary)
             // Set to false for light icons on dark background
@@ -112,14 +128,17 @@ class ExperienceDetailActivity : BaseActivity<ActivityExperienceDetailBinding>()
                 viewModel.getExpDetail(documentID ?: "").collectLatest {
                     when (it) {
                         is State.Loading -> {
-//                            showFancyToast("Loading")
+                            binding.includeShimmerExp.root.startShimmer()
+                            binding.includeShimmerContent.root.startShimmer()
                         }
 
                         is State.Failed -> {
+                            hideShimmers()
                             showFancyToast("Error ${it.message}")
                         }
 
                         is State.Success -> {
+                            hideShimmers()
                             val data = it.data
                             if (data != null) {
                                 val expDetail = data.detail

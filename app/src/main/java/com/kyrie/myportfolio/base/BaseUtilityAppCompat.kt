@@ -1,10 +1,13 @@
 package com.kyrie.myportfolio.base
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.widget.FrameLayout
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -37,6 +40,36 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         super.onCreate(savedInstanceState)
+    }
+
+    /**
+     * `Window.setStatusBarColor` is deprecated and ignored once the app targets SDK 35, so the
+     * status bar area is painted by this view instead. It sits on top of the content, is sized
+     * from the status bar inset, and is excluded from every window transition.
+     * @see [com.kyrie.utility.animation.TransitionUtils]
+     */
+    private val statusBarScrim: View by lazy {
+        val content: FrameLayout = findViewById(android.R.id.content)
+        val scrim = View(this)
+        scrim.id = UtilityR.id.status_bar_scrim
+        scrim.setBackgroundColor(Color.TRANSPARENT)
+        content.addView(
+            scrim,
+            FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.TOP),
+        )
+        ViewCompat.setOnApplyWindowInsetsListener(scrim) { view, insets ->
+            view.updateLayoutParams {
+                height = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(scrim)
+        scrim
+    }
+
+    /** Replacement for the deprecated `window.statusBarColor` setter. */
+    protected fun changeStatusBarColor(color: Int) {
+        statusBarScrim.setBackgroundColor(color)
     }
 
     protected fun applyEdgeToEdgeInsets(root: View) {
@@ -120,14 +153,14 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
             }
         createValueAnimatorAnim(fromColor, secondaryStatusColor, duration) {
             // changing previous activity's status bar color to look more elegant
-            window.statusBarColor = animatedValue as Int
+            changeStatusBarColor(animatedValue as Int)
         }
     }
 
     open fun changeStatusColorFromGreyToSecondary(duration: Long) {
         createValueAnimatorAnim(greyStatusColor, secondaryStatusColor, duration) {
             // changing previous activity's status bar color to look more elegant
-            window.statusBarColor = animatedValue as Int
+            changeStatusBarColor(animatedValue as Int)
         }
     }
 
@@ -140,14 +173,14 @@ abstract class BaseUtilityAppCompat : AppCompatActivity() {
             }
         createValueAnimatorAnim(secondaryStatusColor, toColor, duration) {
             // changing previous activity's status bar color to look more elegant
-            window.statusBarColor = animatedValue as Int
+            changeStatusBarColor(animatedValue as Int)
         }
     }
 
     open fun changeStatusColorFromSecondaryToGrey(duration: Long) {
         createValueAnimatorAnim(secondaryStatusColor, greyStatusColor, duration) {
             // changing previous activity's status bar color to look more elegant
-            window.statusBarColor = animatedValue as Int
+            changeStatusBarColor(animatedValue as Int)
         }
     }
 

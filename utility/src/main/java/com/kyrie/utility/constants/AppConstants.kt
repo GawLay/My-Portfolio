@@ -24,7 +24,9 @@ enum class PlayStoreUrl(val url:String){
 }
 
 enum class BundleKeys(val key:String){
-    ABOUT_ME_BITMAP_KEY(":aboutMeBitmapProfile")
+    // Only the URL travels in the Intent. Passing the decoded bitmap blew past the
+    // ~1MB Binder transaction limit, so the receiver re-reads it from Glide's cache.
+    ABOUT_ME_PROFILE_URL_KEY(":aboutMeProfileUrl")
 }
 enum class ExpIntentKeys(val key: String) {
     DOCUMENT_ID(":documentID"),

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.kyrie.data.models.ExpDetailsData
 import com.kyrie.myportfolio.databinding.ItemExperienceDetailBinding
 
@@ -42,6 +43,12 @@ class ExperienceDetailAdapter() :
         if (items != null) {
             holder.bind(items)
         }
+    }
+
+    override fun onViewAttachedToWindow(holder: ExpDetailVH) {
+        super.onViewAttachedToWindow(holder)
+        // Each project occupies a full flex row inside the shared ConcatAdapter list.
+        (holder.itemView.layoutParams as? FlexboxLayoutManager.LayoutParams)?.flexBasisPercent = 1f
     }
 }
 

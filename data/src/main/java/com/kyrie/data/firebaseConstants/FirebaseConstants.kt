@@ -13,6 +13,8 @@ enum class FirebaseCollections {
     TEMPLATES,
     FAQ,
     FAQ_LIST,
+    ATTRIBUTES,
+    ATTRIBUTE,
 }
 
 enum class FirebaseDefaultException(val message: String) {

@@ -28,6 +28,9 @@ class FaqActivity : BaseActivity<ActivityFaqBinding>() {
     }
 
     private fun setupRc() {
+        // The shimmer layout ships at alpha 0 (see shimmer_faq_list.xml); make it visible so the
+        // loading placeholder actually shows while the FAQ list is being fetched.
+        binding.includeShimmer.root.alpha = 1f
         faqAdapter = FaqAdapter()
         binding.rcFaq.apply {
             layoutManager = LinearLayoutManager(this@FaqActivity)

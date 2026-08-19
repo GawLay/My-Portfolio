@@ -2,6 +2,7 @@ package com.kyrie.myportfolio.di
 
 import com.kyrie.myportfolio.aboutMe.AboutMeViewModel
 import com.kyrie.myportfolio.experience.detail.ExperienceDetailViewModel
+import com.kyrie.myportfolio.setting.attribute.AttributeViewModel
 import com.kyrie.myportfolio.setting.faq.FaqViewModel
 import com.kyrie.myportfolio.shared.SharedViewModel
 import com.kyrie.myportfolio.skill.SkillViewModel
@@ -17,4 +18,5 @@ val viewModelModules =
         viewModelOf(::ExperienceDetailViewModel)
         viewModelOf(::TemplateViewModel)
         viewModelOf(::FaqViewModel)
+        viewModelOf(::AttributeViewModel)
     }

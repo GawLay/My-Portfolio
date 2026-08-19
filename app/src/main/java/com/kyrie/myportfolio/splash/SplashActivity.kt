@@ -16,7 +16,6 @@ import com.kyrie.utility.animation.TRANSLATION_Y
 import com.kyrie.utility.animation.createAnim
 import com.kyrie.utility.animation.startAnimSet
 import com.kyrie.utility.math.GetXY
-import com.kyrie.utility.utility.changeStatusBarColor
 import com.kyrie.utility.utility.overridePendingTransitionExt
 import com.kyrie.utility.utility.startRevealIntent
 import kotlinx.coroutines.delay
