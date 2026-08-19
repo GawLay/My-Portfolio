@@ -58,3 +58,9 @@
 -keep class **.R$* {
     <fields>;
 }
+
+# OkHttp references optional TLS providers (BouncyCastle / Conscrypt / OpenJSSE)
+# that are not on the classpath; suppress the R8 "missing classes" warnings.
+-dontwarn org.bouncycastle.jsse.**
+-dontwarn org.conscrypt.**
+-dontwarn org.openjsse.**
