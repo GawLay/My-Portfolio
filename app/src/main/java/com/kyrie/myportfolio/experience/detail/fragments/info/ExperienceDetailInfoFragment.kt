@@ -47,8 +47,7 @@ class ExperienceDetailInfoFragment : BaseFragment<FragmentExperienceDetailInfoBi
 
     private fun setRc() {
         val expAdapter = ExperienceDetailAdapter().also { expDetailAdapter = it }
-        val headerAdapter = SectionHeaderAdapter(getString(UtilityR.string.skill))
-            .also { skillHeaderAdapter = it }
+        val headerAdapter = SectionHeaderAdapter(getString(UtilityR.string.skill)).also { skillHeaderAdapter = it }
         val chipAdapter = SkillChipAdapter().also { skillChipAdapter = it }
 
         // A single scrolling list: full-width project rows, a "Skills" header, then
